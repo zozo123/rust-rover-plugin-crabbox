@@ -11,11 +11,13 @@ It is intentionally more than `rust:1-bookworm`:
   `cmake`, `pkg-config`, `libssl-dev`, and `protobuf-compiler`.
 - Crabbox sync/runtime tools: `git`, `ssh`, `rsync`, `tar`, `curl`, `jq`.
 - Non-root `crabbox` user and `/workspace/crabbox` workdir.
+- Rust tools are also symlinked into `/usr/local/bin` so delegated exec
+  transports with a minimal `PATH` can still find `cargo`.
 
 The plugin defaults Islo Rust actions to:
 
 ```text
-ghcr.io/zozo123/rust-rover-plugin-crabbox/crabbox-rust-runner:0.3.0
+ghcr.io/zozo123/rust-rover-plugin-crabbox/crabbox-rust-runner:0.3.2
 ```
 
 Manual smoke:
@@ -24,4 +26,5 @@ Manual smoke:
 docker build -t crabbox-rust-runner:local docker/rust-runner
 docker run --rm crabbox-rust-runner:local cargo --version
 docker run --rm crabbox-rust-runner:local cargo nextest --version
+docker run --rm crabbox-rust-runner:local env -i PATH=/usr/local/bin:/usr/bin:/bin cargo --version
 ```

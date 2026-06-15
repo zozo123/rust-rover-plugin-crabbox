@@ -47,6 +47,11 @@ RUN rustup component add clippy rustfmt \
     && cargo clippy --version \
     && cargo fmt --version
 
+RUN for tool in cargo rustc rustdoc rustfmt clippy-driver; do \
+        ln -sf "$(rustup which "${tool}")" "/usr/local/bin/${tool}"; \
+    done \
+    && ln -sf "$(rustup which cargo-clippy)" /usr/local/bin/cargo-clippy
+
 RUN arch="$(dpkg --print-architecture)" \
     && case "$arch" in \
         amd64) nextest_arch="x86_64-unknown-linux-gnu" ;; \
@@ -55,6 +60,7 @@ RUN arch="$(dpkg --print-architecture)" \
     esac \
     && curl -fsSL "https://get.nexte.st/${CARGO_NEXTEST_VERSION}/${nextest_arch}.tar.gz" -o /tmp/cargo-nextest.tar.gz \
     && tar -xzf /tmp/cargo-nextest.tar.gz -C /usr/local/cargo/bin cargo-nextest \
+    && ln -sf /usr/local/cargo/bin/cargo-nextest /usr/local/bin/cargo-nextest \
     && rm /tmp/cargo-nextest.tar.gz \
     && cargo nextest --version
 
@@ -69,6 +75,7 @@ WORKDIR /workspace/crabbox
 USER ${USERNAME}
 
 RUN cargo --version \
+    && /usr/local/bin/cargo --version \
     && cargo clippy --version \
     && cargo nextest --version
 

@@ -61,7 +61,7 @@ ok      ssh-key   per-lease
 ok      provider  islo
 
 Tools > Crabbox > Run Cargo Test on Islo
---islo-image ghcr.io/zozo123/rust-rover-plugin-crabbox/crabbox-rust-runner:0.3.0
+--islo-image ghcr.io/zozo123/rust-rover-plugin-crabbox/crabbox-rust-runner:0.3.2
 sync candidate: dirty checkout
 run_id=run_9f73c8 provider=islo
 result: ok. 48 passed; 0 failed</code></pre>
@@ -142,13 +142,13 @@ result: ok. 48 passed; 0 failed</code></pre>
             <p class="exhibit-label">exhibit b · sandbox smoke</p>
             <h3>Rust smoke</h3>
             <p>Runs a tiny remote command to prove the provider path before spending time on a project test.</p>
-            <pre><code>crabbox run --provider islo --islo-image ghcr.io/zozo123/rust-rover-plugin-crabbox/crabbox-rust-runner:0.3.0 -- cargo --version</code></pre>
+            <pre><code>crabbox run --provider islo --islo-image ghcr.io/zozo123/rust-rover-plugin-crabbox/crabbox-rust-runner:0.3.2 -- cargo --version</code></pre>
           </article>
           <article class="exhibit">
             <p class="exhibit-label">exhibit c · project proof</p>
             <h3>Cargo test</h3>
             <p>Syncs the current checkout and runs the real Rust suite where the sandbox is the boundary.</p>
-            <pre><code>crabbox run --provider islo --islo-image ghcr.io/zozo123/rust-rover-plugin-crabbox/crabbox-rust-runner:0.3.0 -- cargo test</code></pre>
+            <pre><code>crabbox run --provider islo --islo-image ghcr.io/zozo123/rust-rover-plugin-crabbox/crabbox-rust-runner:0.3.2 -- cargo test</code></pre>
           </article>
         </div>
       </section>
@@ -176,7 +176,7 @@ crabbox --version
 
 # RustRover
 Settings > Crabbox > Islo API key
-Settings > Crabbox > Islo Rust image = ghcr.io/zozo123/rust-rover-plugin-crabbox/crabbox-rust-runner:0.3.0
+Settings > Crabbox > Islo Rust image = ghcr.io/zozo123/rust-rover-plugin-crabbox/crabbox-rust-runner:0.3.2
 Tools > Crabbox > Doctor Islo
 Tools > Crabbox > Run Cargo Test on Islo</code></pre>
         </div>
@@ -210,7 +210,7 @@ Tools > Crabbox > Run Cargo Test on Islo</code></pre>
     </main>
 
     <footer>
-      <span>Crabbox Runner v0.3.1</span>
+      <span>Crabbox Runner v0.3.2</span>
       <a href="https://github.com/zozo123/rust-rover-plugin-crabbox/releases/latest">latest release</a>
       <a href="https://crabbox.sh/">crabbox.sh</a>
       <a href="https://islo.dev/">islo.dev</a>

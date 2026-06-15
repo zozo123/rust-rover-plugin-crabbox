@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "com.incredibuild"
-version = "0.3.1"
+version = "0.3.2"
 
 repositories {
     mavenCentral()
@@ -39,9 +39,9 @@ intellijPlatform {
         """.trimIndent()
 
         changeNotes = """
-            Updates the plugin and website logo to match the Crabbox crab mark
-            from crabbox.sh. Keeps the Crabbox Rust Runner image defaults and
-            Islo run flow.
+            Updates the Crabbox Rust Runner image so Cargo and Rust tools are
+            available through /usr/local/bin as well as /usr/local/cargo/bin,
+            matching Islo's delegated exec environment.
         """.trimIndent()
     }
 }
