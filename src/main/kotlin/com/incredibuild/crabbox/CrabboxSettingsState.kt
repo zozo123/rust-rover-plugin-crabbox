@@ -16,6 +16,7 @@ class CrabboxSettingsState : PersistentStateComponent<CrabboxSettingsState.State
         var defaultProvider: String = ""
         var defaultClass: String = ""
         var defaultCrabboxArgs: String = ""
+        var isloImage: String = DEFAULT_ISLO_RUST_IMAGE
     }
 
     private var state = State()
@@ -37,10 +38,50 @@ class CrabboxSettingsState : PersistentStateComponent<CrabboxSettingsState.State
             args += state.defaultClass.trim()
         }
         args += CrabboxCommandLine.splitArgs(state.defaultCrabboxArgs)
+        if (state.defaultProvider.equals("islo", ignoreCase = true)) {
+            return withIsloRustImage(args)
+        }
         return args
     }
 
+    fun isloRunArgs(): List<String> {
+        return withIsloRustImage(withProvider(defaultRunArgs(), "islo"))
+    }
+
+    private fun withProvider(args: List<String>, provider: String): List<String> {
+        return withoutFlagValue(args, "--provider") + listOf("--provider", provider)
+    }
+
+    private fun withIsloRustImage(args: List<String>): List<String> {
+        if (hasFlag(args, "--islo-image")) {
+            return args
+        }
+
+        val image = state.isloImage.ifBlank { DEFAULT_ISLO_RUST_IMAGE }.trim()
+        return args + listOf("--islo-image", image)
+    }
+
+    private fun hasFlag(args: List<String>, flag: String): Boolean {
+        return args.any { it == flag || it.startsWith("$flag=") }
+    }
+
+    private fun withoutFlagValue(args: List<String>, flag: String): List<String> {
+        val normalized = mutableListOf<String>()
+        var skipNext = false
+        for (arg in args) {
+            when {
+                skipNext -> skipNext = false
+                arg == flag -> skipNext = true
+                arg.startsWith("$flag=") -> Unit
+                else -> normalized += arg
+            }
+        }
+        return normalized
+    }
+
     companion object {
+        const val DEFAULT_ISLO_RUST_IMAGE = "docker.io/library/rust:1-bookworm"
+
         fun getInstance(): CrabboxSettingsState = service()
     }
 }

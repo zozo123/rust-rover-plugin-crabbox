@@ -14,6 +14,7 @@ class CrabboxSettingsConfigurable : Configurable {
     private val defaultProviderField = JBTextField()
     private val defaultClassField = JBTextField()
     private val defaultCrabboxArgsField = JBTextField()
+    private val isloImageField = JBTextField()
     private val isloApiKeyField = JPasswordField()
     private var panel: JPanel? = null
     private var originalIsloApiKey = ""
@@ -28,6 +29,7 @@ class CrabboxSettingsConfigurable : Configurable {
             .addLabeledComponent("Default class:", defaultClassField)
             .addLabeledComponent("Default Crabbox args:", defaultCrabboxArgsField)
             .addSeparator()
+            .addLabeledComponent("Islo Rust image:", isloImageField)
             .addLabeledComponent("Islo API key:", isloApiKeyField)
             .addComponentFillVertically(JPanel(), 0)
             .panel
@@ -42,6 +44,7 @@ class CrabboxSettingsConfigurable : Configurable {
             defaultProviderField.text != state.defaultProvider ||
             defaultClassField.text != state.defaultClass ||
             defaultCrabboxArgsField.text != state.defaultCrabboxArgs ||
+            isloImageField.text != state.isloImage ||
             String(isloApiKeyField.password) != originalIsloApiKey
     }
 
@@ -58,6 +61,9 @@ class CrabboxSettingsConfigurable : Configurable {
         state.defaultProvider = defaultProviderField.text.trim()
         state.defaultClass = defaultClassField.text.trim()
         state.defaultCrabboxArgs = defaultCrabboxArgsField.text.trim()
+        state.isloImage = isloImageField.text.ifBlank {
+            CrabboxSettingsState.DEFAULT_ISLO_RUST_IMAGE
+        }.trim()
         CrabboxSecrets.setIsloApiKey(String(isloApiKeyField.password))
         originalIsloApiKey = CrabboxSecrets.getIsloApiKey()
     }
@@ -69,6 +75,9 @@ class CrabboxSettingsConfigurable : Configurable {
         defaultProviderField.text = state.defaultProvider
         defaultClassField.text = state.defaultClass
         defaultCrabboxArgsField.text = state.defaultCrabboxArgs
+        isloImageField.text = state.isloImage.ifBlank {
+            CrabboxSettingsState.DEFAULT_ISLO_RUST_IMAGE
+        }
         originalIsloApiKey = CrabboxSecrets.getIsloApiKey()
         isloApiKeyField.text = originalIsloApiKey
     }

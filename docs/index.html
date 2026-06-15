@@ -61,6 +61,7 @@ ok      ssh-key   per-lease
 ok      provider  islo
 
 Tools > Crabbox > Run Cargo Test on Islo
+--islo-image docker.io/library/rust:1-bookworm
 sync candidate: dirty checkout
 run_id=run_9f73c8 provider=islo
 result: ok. 48 passed; 0 failed</code></pre>
@@ -122,13 +123,13 @@ result: ok. 48 passed; 0 failed</code></pre>
             <p class="exhibit-label">exhibit b · sandbox smoke</p>
             <h3>Rust smoke</h3>
             <p>Runs a tiny remote command to prove the provider path before spending time on a project test.</p>
-            <pre><code>crabbox run --provider islo -- rustc --version</code></pre>
+            <pre><code>crabbox run --provider islo --islo-image docker.io/library/rust:1-bookworm -- cargo --version</code></pre>
           </article>
           <article class="exhibit">
             <p class="exhibit-label">exhibit c · project proof</p>
             <h3>Cargo test</h3>
             <p>Syncs the current checkout and runs the real Rust suite where the sandbox is the boundary.</p>
-            <pre><code>crabbox run --provider islo -- cargo test</code></pre>
+            <pre><code>crabbox run --provider islo --islo-image docker.io/library/rust:1-bookworm -- cargo test</code></pre>
           </article>
         </div>
       </section>
@@ -146,7 +147,7 @@ result: ok. 48 passed; 0 failed</code></pre>
         <div class="run-steps">
           <ol>
             <li><strong>Install.</strong> Download the latest release zip and install it from RustRover's plugin disk installer.</li>
-            <li><strong>Configure.</strong> Open Settings &gt; Crabbox and paste the Islo API key.</li>
+            <li><strong>Configure.</strong> Open Settings &gt; Crabbox, paste the Islo API key, and keep the Rust image default.</li>
             <li><strong>Preflight.</strong> Run Tools &gt; Crabbox &gt; Doctor Islo.</li>
             <li><strong>Smoke.</strong> Run Tools &gt; Crabbox &gt; Run Islo Rust Smoke.</li>
             <li><strong>Prove.</strong> Run Tools &gt; Crabbox &gt; Run Cargo Test on Islo.</li>
@@ -156,6 +157,7 @@ crabbox --version
 
 # RustRover
 Settings > Crabbox > Islo API key
+Settings > Crabbox > Islo Rust image = docker.io/library/rust:1-bookworm
 Tools > Crabbox > Doctor Islo
 Tools > Crabbox > Run Cargo Test on Islo</code></pre>
         </div>
@@ -182,7 +184,7 @@ Tools > Crabbox > Run Cargo Test on Islo</code></pre>
         <div class="caveat-list">
           <p><strong>It proves the plugin shape.</strong> RustRover can configure Islo, call Crabbox, and show the proof loop from the IDE.</p>
           <p><strong>It does not replace Crabbox.</strong> Lease logic, sync, provider behavior, artifacts, and cleanup stay in `crabbox` where they belong.</p>
-          <p><strong>It needs real credentials.</strong> `Doctor Islo` is the first honest gate: no `ISLO_API_KEY`, no fake green check.</p>
+          <p><strong>It needs a real toolchain image.</strong> The default Islo Ubuntu image does not include Cargo. The plugin now sends a Rust image by default, and teams can replace it with a baked image.</p>
           <p><strong>The next proof is context-aware tests.</strong> The obvious next layer is “run test under caret on Islo.”</p>
         </div>
       </section>

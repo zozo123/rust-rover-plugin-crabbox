@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "com.incredibuild"
-version = "0.2.1"
+version = "0.2.2"
 
 repositories {
     mavenCentral()
@@ -39,9 +39,9 @@ intellijPlatform {
         """.trimIndent()
 
         changeNotes = """
-            Fixes one-shot Tools menu actions by registering temporary run
-            configurations before selection. Includes the Islo setup flow,
-            plugin icons, settings, and console linkification.
+            Defaults Islo Rust actions to a Rust-capable image so cargo is
+            available in the sandbox. Keeps the Islo setup flow, plugin icons,
+            settings, and console linkification.
         """.trimIndent()
     }
 }

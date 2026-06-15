@@ -115,23 +115,8 @@ class CrabboxRunCargoTestIsloAction : CrabboxProjectAction() {
     override fun actionPerformed(event: AnActionEvent) {
         val project = event.project ?: return
         if (!ensureIsloApiKey(project)) return
-        val args = withProvider(CrabboxSettingsState.getInstance().defaultRunArgs(), "islo")
+        val args = CrabboxSettingsState.getInstance().isloRunArgs()
         CrabboxTaskRunner.runRust(project, "Crabbox cargo test on Islo", "cargo test", args)
-    }
-
-    private fun withProvider(args: List<String>, provider: String): List<String> {
-        val normalized = mutableListOf<String>()
-        var skipNext = false
-        for (arg in args) {
-            when {
-                skipNext -> skipNext = false
-                arg == "--provider" -> skipNext = true
-                arg.startsWith("--provider=") -> Unit
-                else -> normalized += arg
-            }
-        }
-        normalized += listOf("--provider", provider)
-        return normalized
     }
 }
 
@@ -139,23 +124,8 @@ class CrabboxRunIsloRustSmokeAction : CrabboxProjectAction() {
     override fun actionPerformed(event: AnActionEvent) {
         val project = event.project ?: return
         if (!ensureIsloApiKey(project)) return
-        val args = withProvider(CrabboxSettingsState.getInstance().defaultRunArgs(), "islo")
-        CrabboxTaskRunner.runRust(project, "Crabbox Islo Rust smoke", "rustc --version", args)
-    }
-
-    private fun withProvider(args: List<String>, provider: String): List<String> {
-        val normalized = mutableListOf<String>()
-        var skipNext = false
-        for (arg in args) {
-            when {
-                skipNext -> skipNext = false
-                arg == "--provider" -> skipNext = true
-                arg.startsWith("--provider=") -> Unit
-                else -> normalized += arg
-            }
-        }
-        normalized += listOf("--provider", provider)
-        return normalized
+        val args = CrabboxSettingsState.getInstance().isloRunArgs()
+        CrabboxTaskRunner.runRust(project, "Crabbox Islo Rust smoke", "cargo --version", args)
     }
 }
 
