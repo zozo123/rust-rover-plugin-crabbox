@@ -1,0 +1,11 @@
+.gradle/
+.intellijPlatform/
+.kotlin/
+build/
+out/
+.idea/
+*.iml
+.DS_Store
+
+# Local Crabbox evidence can include logs, captures, or downloaded artifacts.
+.crabbox/

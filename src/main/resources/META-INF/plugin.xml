@@ -1,0 +1,92 @@
+<idea-plugin>
+    <id>com.incredibuild.crabbox</id>
+    <name>Crabbox Runner</name>
+    <vendor email="dev@incredibuild.com">Incredibuild</vendor>
+
+    <description>
+        <![CDATA[
+        Run Rust and Cargo commands inside OpenClaw Crabbox remote sandboxes from
+        RustRover. The plugin delegates to the local <code>crabbox</code> CLI,
+        so Crabbox keeps ownership of auth, lease lifecycle, sync, SSH, delegated
+        providers, evidence, and cleanup.
+        ]]>
+    </description>
+
+    <depends>com.intellij.modules.platform</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <configurationType implementation="com.incredibuild.crabbox.CrabboxRunConfigurationType"/>
+        <applicationConfigurable
+            id="crabbox.settings"
+            displayName="Crabbox"
+            instance="com.incredibuild.crabbox.CrabboxSettingsConfigurable"/>
+    </extensions>
+
+    <actions>
+        <group id="Crabbox.Tools" text="Crabbox" popup="true">
+            <add-to-group group-id="ToolsMenu" anchor="last"/>
+
+            <action
+                id="Crabbox.Doctor"
+                class="com.incredibuild.crabbox.actions.CrabboxDoctorAction"
+                text="Doctor"
+                description="Run crabbox doctor"/>
+            <action
+                id="Crabbox.Login"
+                class="com.incredibuild.crabbox.actions.CrabboxLoginAction"
+                text="Login..."
+                description="Run crabbox login"/>
+            <action
+                id="Crabbox.Init"
+                class="com.incredibuild.crabbox.actions.CrabboxInitAction"
+                text="Init Repo"
+                description="Run crabbox init in the project root"/>
+            <action
+                id="Crabbox.SyncPlan"
+                class="com.incredibuild.crabbox.actions.CrabboxSyncPlanAction"
+                text="Sync Plan"
+                description="Preview the files Crabbox will sync"/>
+            <action
+                id="Crabbox.Warmup"
+                class="com.incredibuild.crabbox.actions.CrabboxWarmupAction"
+                text="Warmup Box"
+                description="Warm a Crabbox lease with the configured provider and class"/>
+
+            <separator/>
+
+            <action
+                id="Crabbox.RunCargoTest"
+                class="com.incredibuild.crabbox.actions.CrabboxRunCargoTestAction"
+                text="Run Cargo Test"
+                description="Run cargo test in Crabbox"/>
+            <action
+                id="Crabbox.RunCargoTestWorkspace"
+                class="com.incredibuild.crabbox.actions.CrabboxRunCargoTestWorkspaceAction"
+                text="Run Cargo Test Workspace"
+                description="Run cargo test --workspace in Crabbox"/>
+            <action
+                id="Crabbox.RunCargoClippy"
+                class="com.incredibuild.crabbox.actions.CrabboxRunCargoClippyAction"
+                text="Run Cargo Clippy"
+                description="Run cargo clippy --all-targets in Crabbox"/>
+            <action
+                id="Crabbox.RunCargoNextest"
+                class="com.incredibuild.crabbox.actions.CrabboxRunCargoNextestAction"
+                text="Run Cargo Nextest"
+                description="Run cargo nextest run in Crabbox"/>
+            <action
+                id="Crabbox.RunCargoTestIslo"
+                class="com.incredibuild.crabbox.actions.CrabboxRunCargoTestIsloAction"
+                text="Run Cargo Test on Islo"
+                description="Run cargo test through Crabbox with --provider islo"/>
+
+            <separator/>
+
+            <action
+                id="Crabbox.StopLease"
+                class="com.incredibuild.crabbox.actions.CrabboxStopLeaseAction"
+                text="Stop Lease..."
+                description="Release a Crabbox lease"/>
+        </group>
+    </actions>
+</idea-plugin>

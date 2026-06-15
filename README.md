@@ -1,0 +1,125 @@
+# Crabbox Runner for RustRover
+
+Crabbox Runner makes RustRover a local editor for remote Rust execution. The
+plugin keeps the project, inspections, and normal edit loop local, then delegates
+expensive or evidence-sensitive commands to the local `crabbox` CLI:
+
+```bash
+crabbox run -- cargo test
+crabbox run -- cargo test --workspace
+crabbox run -- cargo clippy --all-targets
+```
+
+That is the product promise: local RustRover ergonomics, remote Crabbox compute,
+sync, lease lifecycle, streamed output, durable logs, and artifacts.
+
+## Why This Shape
+
+OpenClaw Crabbox is a remote testbox and sandbox control plane, not a generic
+shell script. A RustRover plugin should therefore wrap the official local CLI
+instead of reimplementing lease, broker, SSH, rsync, delegated provider, auth, or
+artifact behavior.
+
+The resulting architecture is intentionally thin:
+
+```text
+RustRover action / run configuration
+  -> Crabbox Runner plugin
+  -> local crabbox CLI
+  -> Crabbox broker + SSH/rsync or delegated provider
+  -> remote runner
+```
+
+This fits Rust teams that have bigger CI-like test workloads than their laptops
+can comfortably handle, need remote Linux or provider-specific environments, or
+want reproducible evidence from local development and agent-assisted work.
+
+## MVP Features
+
+- `Tools > Crabbox > Doctor`
+- `Tools > Crabbox > Login...`
+- `Tools > Crabbox > Init Repo`
+- `Tools > Crabbox > Sync Plan`
+- `Tools > Crabbox > Warmup Box`
+- `Tools > Crabbox > Run Cargo Test`
+- `Tools > Crabbox > Run Cargo Test Workspace`
+- `Tools > Crabbox > Run Cargo Clippy`
+- `Tools > Crabbox > Run Cargo Nextest`
+- `Tools > Crabbox > Run Cargo Test on Islo`
+- `Tools > Crabbox > Stop Lease...`
+- Persistent `Crabbox` run configurations for commands like
+  `cargo test --workspace`
+- Console links for Crabbox URLs, `run_...` ids, and `cbx_...` lease ids
+
+## Install From GitHub
+
+1. Open the latest GitHub release.
+2. Download `crabbox-rustrover-0.1.0.zip`.
+3. In RustRover, open `Settings > Plugins`.
+4. Choose the gear menu, then `Install Plugin from Disk...`.
+5. Select the downloaded zip and restart RustRover.
+
+After restart, open a Rust project and run `Tools > Crabbox > Doctor`.
+
+## Settings
+
+Open `Settings > Crabbox`:
+
+- `Crabbox executable`: defaults to `crabbox`; set `/path/to/crabbox.sh` only if
+  your team really uses a wrapper.
+- `Broker URL`: used by the login action when present.
+- `Default provider`: optional, for example `hetzner`, `aws`, or `islo`.
+- `Default class`: optional, for example `standard`, `fast`, `large`, or `beast`.
+- `Default Crabbox args`: extra flags appended before the Cargo command.
+
+The plugin does not store broker tokens. Use Crabbox's own login flow.
+
+## Islo Smoke Test
+
+After installing Crabbox and authenticating:
+
+```bash
+brew install openclaw/tap/crabbox
+crabbox doctor
+```
+
+In RustRover:
+
+1. Open `Settings > Crabbox`.
+2. Set `Default provider` to `islo`, or use `Tools > Crabbox > Run Cargo Test on Islo`.
+3. Run `Tools > Crabbox > Sync Plan` and check for unexpected large files.
+4. Run `Tools > Crabbox > Run Cargo Test on Islo`.
+
+The expected CLI shape is:
+
+```bash
+crabbox run --provider islo -- cargo test
+```
+
+If the Islo provider name or account setup differs in your Crabbox deployment,
+keep the plugin unchanged and put the correct provider flags in `Default Crabbox
+args` or a saved run configuration.
+
+## Build
+
+```bash
+./gradlew buildPlugin
+./gradlew runIde
+```
+
+The installable zip is written to `build/distributions/`.
+
+The plugin targets IntelliJ Platform build `252+` and avoids RustRover-specific
+APIs in this MVP, so it should run in RustRover and other compatible IntelliJ
+Platform IDEs that can execute external tools.
+
+## Roadmap
+
+The next valuable layer is Rust-aware context detection:
+
+- run the test under the caret;
+- infer `cargo test -p <package> <test_name>`;
+- surface `crabbox events`, `results`, `artifacts`, `ssh`, and `webvnc` actions
+  from parsed console metadata;
+- warn when `.crabbox.yaml` is missing or `sync-plan` looks too large;
+- offer cleanup notifications for kept leases.
