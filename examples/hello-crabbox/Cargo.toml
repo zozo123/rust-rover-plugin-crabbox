@@ -1,0 +1,8 @@
+[package]
+name = "hello-crabbox"
+version = "0.1.0"
+edition = "2021"
+description = "Minimal Rust crate used to prove the Crabbox Runner remote test path end to end."
+license = "MIT"
+
+[dependencies]

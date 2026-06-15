@@ -21,7 +21,7 @@ object CrabboxTaskRunner {
         configuration.crabboxExecutable = settings.state.crabboxExecutable
         configuration.workingDirectory = project.basePath.orEmpty()
         configuration.crabboxArgs = CrabboxCommandLine.joinArgs(crabboxArgs)
-        configuration.rustCommand = rustCommand
+        configuration.rustCommand = CrabboxWorkspace.wrapRustCommand(project.basePath, rustCommand)
         execute(project, runnerSettings)
     }
 

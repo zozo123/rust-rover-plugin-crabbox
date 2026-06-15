@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "com.incredibuild"
-version = "0.3.2"
+version = "0.3.3"
 
 repositories {
     mavenCentral()
@@ -39,9 +39,11 @@ intellijPlatform {
         """.trimIndent()
 
         changeNotes = """
-            Updates the Crabbox Rust Runner image so Cargo and Rust tools are
-            available through /usr/local/bin as well as /usr/local/cargo/bin,
-            matching Islo's delegated exec environment.
+            Crabbox runs the command from the git repository root. Cargo actions
+            now cd into the crate's manifest directory when it lives in a
+            subdirectory, so Run Cargo Test works for monorepo crates and the
+            bundled examples/hello-crabbox demo. Also fixes a Settings dialog
+            that reported unsaved changes for the Islo image field on open.
         """.trimIndent()
     }
 }

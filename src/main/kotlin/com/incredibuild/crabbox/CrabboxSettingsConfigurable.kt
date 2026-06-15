@@ -44,7 +44,7 @@ class CrabboxSettingsConfigurable : Configurable {
             defaultProviderField.text != state.defaultProvider ||
             defaultClassField.text != state.defaultClass ||
             defaultCrabboxArgsField.text != state.defaultCrabboxArgs ||
-            isloImageField.text != state.isloImage ||
+            isloImageField.text != state.isloImage.ifBlank { CrabboxSettingsState.DEFAULT_ISLO_RUST_IMAGE } ||
             String(isloApiKeyField.password) != originalIsloApiKey
     }
 

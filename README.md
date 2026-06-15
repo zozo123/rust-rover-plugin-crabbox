@@ -61,7 +61,7 @@ want reproducible evidence from local development and agent-assisted work.
 ## Install From GitHub
 
 1. Open the latest GitHub release.
-2. Download `crabbox-rustrover-0.3.2.zip`.
+2. Download `crabbox-rustrover-0.3.3.zip`.
 3. In RustRover, open `Settings > Plugins`.
 4. Choose the gear menu, then `Install Plugin from Disk...`.
 5. Select the downloaded zip and restart RustRover.
@@ -117,6 +117,43 @@ crabbox run --provider islo --islo-image ghcr.io/zozo123/rust-rover-plugin-crabb
 If the Islo provider name or account setup differs in your Crabbox deployment,
 keep the plugin unchanged and put the correct provider flags in `Default Crabbox
 args` or a saved run configuration.
+
+## How Crabbox Resolves Your Project
+
+Crabbox syncs and runs from the **enclosing git repository root**, not the
+folder you launched from. If your `Cargo.toml` is at the repo root (the usual
+case), `cargo test` just works. If the crate lives in a subdirectory, a bare
+`cargo test` runs at the repo root and fails with
+`could not find Cargo.toml ... or any parent directory`.
+
+The plugin handles this: the Cargo actions detect the manifest directory and
+`cd` into it relative to the git root before running Cargo, so monorepo crates
+and the bundled demo work without extra configuration.
+
+## Demo Crate
+
+`examples/hello-crabbox` is a tiny crate that exists to prove the path end to
+end. Verified with the published runner image via Crabbox's local container
+provider (the same sync + image + `cargo test` path Islo uses):
+
+```bash
+crabbox run \
+  --provider local-container \
+  --local-container-image ghcr.io/zozo123/rust-rover-plugin-crabbox/crabbox-rust-runner:0.3.2 \
+  -- bash -lc 'cd examples/hello-crabbox && cargo test'
+# Compiling hello-crabbox v0.1.0
+# test result: ok. 2 passed; 0 failed
+# run summary ... exit=0
+```
+
+To run it on Islo, swap the provider and image flags:
+
+```bash
+crabbox run \
+  --provider islo \
+  --islo-image ghcr.io/zozo123/rust-rover-plugin-crabbox/crabbox-rust-runner:0.3.2 \
+  -- bash -lc 'cd examples/hello-crabbox && cargo test'
+```
 
 ## Rust Runner Image
 
