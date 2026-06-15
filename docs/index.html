@@ -19,9 +19,10 @@
         <span>Crabbox Runner</span>
       </a>
       <nav aria-label="Primary navigation">
-        <a href="#promise">Promise</a>
-        <a href="#flow">Flow</a>
-        <a href="#install">Install</a>
+        <a href="#thesis">Thesis</a>
+        <a href="#proof">Proof</a>
+        <a href="#runbook">Runbook</a>
+        <a href="#caveats">Caveats</a>
         <a href="https://github.com/zozo123/rust-rover-plugin-crabbox">GitHub</a>
       </nav>
     </header>
@@ -29,18 +30,20 @@
     <main>
       <section class="hero">
         <div class="hero-copy">
-          <p class="eyebrow">RustRover + crabbox.sh + Islo</p>
-          <h1>Prove this Rust code in a real remote sandbox.</h1>
+          <p class="mission">ZOZO123 · FIELD PAGE · 2026</p>
+          <p class="eyebrow">RustRover × crabbox.sh × islo.dev</p>
+          <h1>The Run button should prove the code.</h1>
           <p class="lede">
-            Crabbox Runner adds the missing IDE button: keep editing locally,
-            send the dirty checkout to Crabbox, run on Islo or another remote
-            provider, and get the streamed proof back inside RustRover.
+            Crabbox Runner turns RustRover into a cockpit for remote execution:
+            edit locally, sync the dirty checkout through Crabbox, run inside an
+            Islo sandbox, and get back a run id, logs, artifacts, and test output
+            instead of vibes.
           </p>
           <div class="hero-actions">
             <a class="button primary" href="https://github.com/zozo123/rust-rover-plugin-crabbox/releases/latest">
               Download plugin
             </a>
-            <a class="button secondary" href="#install">See setup</a>
+            <a class="button secondary" href="#runbook">Run it</a>
           </div>
         </div>
 
@@ -49,81 +52,145 @@
             <span></span><span></span><span></span>
             <strong>RustRover Run Console</strong>
           </div>
-          <pre><code>Tools > Crabbox > Doctor Islo
+          <pre><code>Settings > Crabbox
+ISLO_API_KEY = stored in Password Safe
+
+Tools > Crabbox > Doctor Islo
 ok      git       /usr/bin/git
 ok      ssh-key   per-lease
 ok      provider  islo
 
 Tools > Crabbox > Run Cargo Test on Islo
-$ crabbox run --provider islo -- cargo test
 sync candidate: dirty checkout
 run_id=run_9f73c8 provider=islo
-test result: ok. 48 passed; 0 failed</code></pre>
+result: ok. 48 passed; 0 failed</code></pre>
         </div>
       </section>
 
-      <section id="promise" class="promise">
+      <section class="stats-strip" aria-label="Project facts">
+        <div><span>1</span>IDE button</div>
+        <div><span>0</span>remote IDE migration</div>
+        <div><span>3</span>proof actions</div>
+        <div><span>252+</span>IntelliJ platform</div>
+      </section>
+
+      <section id="thesis" class="chapter split">
         <div>
-          <p class="eyebrow">The promise</p>
-          <h2>Not a shell launcher. A remote proof loop.</h2>
+          <p class="section-number">§01 · thesis</p>
+          <h2>Not a shell launcher. A proof boundary.</h2>
         </div>
         <p>
-          Crabbox is the control plane: lease or delegate a sandbox, sync the
-          checkout, run the command, stream output, retain evidence, and clean up.
-          The plugin is the RustRover cockpit for that loop.
+          The plugin should not sell “run a command somewhere else.” It should
+          sell a tighter development loop: a local editor that can dispatch the
+          exact code under your cursor into a disposable, observable sandbox and
+          return receipts. Crabbox owns the hard boundary. RustRover owns the
+          human loop.
         </p>
       </section>
 
-      <section class="cards">
+      <section class="cards proof-cards">
         <article>
           <span class="card-index">01</span>
-          <h3>Local trust</h3>
-          <p>Keep code, inspections, and edits in RustRover. No remote IDE migration.</p>
+          <h3>Edit local</h3>
+          <p>RustRover remains the place where code, inspections, Cargo metadata, and intent live.</p>
         </article>
         <article>
           <span class="card-index">02</span>
-          <h3>Remote capacity</h3>
-          <p>Run `cargo test`, `cargo clippy`, or smoke commands on Crabbox-backed sandboxes.</p>
+          <h3>Run remote</h3>
+          <p>Crabbox syncs the dirty checkout and runs `cargo test`, `cargo clippy`, or a smoke probe.</p>
         </article>
         <article>
           <span class="card-index">03</span>
-          <h3>Returned proof</h3>
-          <p>See streamed output, clickable run ids, lease ids, logs, and artifacts from the IDE.</p>
+          <h3>Trust receipts</h3>
+          <p>Run ids, lease ids, logs, provider status, artifacts, and output are visible from the IDE.</p>
         </article>
       </section>
 
-      <section id="flow" class="flow">
-        <p class="eyebrow">End-to-end flow</p>
-        <h2>From blank install to remote Rust test.</h2>
-        <ol>
-          <li><strong>Configure.</strong> Paste the Islo API key into Settings &gt; Crabbox.</li>
-          <li><strong>Preflight.</strong> Run Tools &gt; Crabbox &gt; Doctor Islo.</li>
-          <li><strong>Smoke.</strong> Run Tools &gt; Crabbox &gt; Run Islo Rust Smoke.</li>
-          <li><strong>Prove.</strong> Run Tools &gt; Crabbox &gt; Run Cargo Test on Islo.</li>
-        </ol>
+      <section id="proof" class="chapter evidence">
+        <div class="chapter-head">
+          <p class="section-number">§02 · evidence</p>
+          <h2>A useful IDE action returns more than stdout.</h2>
+        </div>
+        <div class="exhibit-grid">
+          <article class="exhibit">
+            <p class="exhibit-label">exhibit a · provider preflight</p>
+            <h3>Doctor Islo</h3>
+            <p>Fails before a lease if the local machine, Crabbox config, or Islo credential is wrong.</p>
+            <pre><code>crabbox doctor --provider islo</code></pre>
+          </article>
+          <article class="exhibit">
+            <p class="exhibit-label">exhibit b · sandbox smoke</p>
+            <h3>Rust smoke</h3>
+            <p>Runs a tiny remote command to prove the provider path before spending time on a project test.</p>
+            <pre><code>crabbox run --provider islo -- rustc --version</code></pre>
+          </article>
+          <article class="exhibit">
+            <p class="exhibit-label">exhibit c · project proof</p>
+            <h3>Cargo test</h3>
+            <p>Syncs the current checkout and runs the real Rust suite where the sandbox is the boundary.</p>
+            <pre><code>crabbox run --provider islo -- cargo test</code></pre>
+          </article>
+        </div>
       </section>
 
-      <section id="install" class="install">
+      <section id="runbook" class="chapter runbook">
         <div>
-          <p class="eyebrow">Install</p>
-          <h2>Test the plugin from GitHub.</h2>
+          <p class="section-number">§03 · runbook</p>
+          <h2>From zero to remote test.</h2>
           <p>
-            Download the release zip, then in RustRover open
-            <strong>Settings &gt; Plugins &gt; gear menu &gt; Install Plugin from Disk...</strong>
+            This is the path the menu should make obvious. Install the zip, put
+            the Islo key in one place, preflight once, then use the same button
+            whenever a local run is too small a proof.
           </p>
         </div>
-        <pre><code>brew install openclaw/tap/crabbox
+        <div class="run-steps">
+          <ol>
+            <li><strong>Install.</strong> Download the latest release zip and install it from RustRover's plugin disk installer.</li>
+            <li><strong>Configure.</strong> Open Settings &gt; Crabbox and paste the Islo API key.</li>
+            <li><strong>Preflight.</strong> Run Tools &gt; Crabbox &gt; Doctor Islo.</li>
+            <li><strong>Smoke.</strong> Run Tools &gt; Crabbox &gt; Run Islo Rust Smoke.</li>
+            <li><strong>Prove.</strong> Run Tools &gt; Crabbox &gt; Run Cargo Test on Islo.</li>
+          </ol>
+          <pre><code>brew install openclaw/tap/crabbox
 crabbox --version
 
 # RustRover
 Settings > Crabbox > Islo API key
 Tools > Crabbox > Doctor Islo
 Tools > Crabbox > Run Cargo Test on Islo</code></pre>
+        </div>
+      </section>
+
+      <section class="chapter contracts">
+        <div class="chapter-head">
+          <p class="section-number">§04 · contracts</p>
+          <h2>Four boundaries, one run id.</h2>
+        </div>
+        <div class="contract-board">
+          <article><span>01</span><h3>IDE</h3><p>Captures intent and project context without becoming a remote control plane.</p></article>
+          <article><span>02</span><h3>Crabbox CLI</h3><p>Owns auth, sync, provider args, lifecycle, logs, and evidence capture.</p></article>
+          <article><span>03</span><h3>Islo sandbox</h3><p>Runs untrusted or expensive code inside a disposable compute boundary.</p></article>
+          <article><span>04</span><h3>Receipts</h3><p>Return run ids, console output, artifacts, and failure hints back to RustRover.</p></article>
+        </div>
+      </section>
+
+      <section id="caveats" class="chapter caveats">
+        <div>
+          <p class="section-number">§05 · caveats</p>
+          <h2>What this proves — and what it does not.</h2>
+        </div>
+        <div class="caveat-list">
+          <p><strong>It proves the plugin shape.</strong> RustRover can configure Islo, call Crabbox, and show the proof loop from the IDE.</p>
+          <p><strong>It does not replace Crabbox.</strong> Lease logic, sync, provider behavior, artifacts, and cleanup stay in `crabbox` where they belong.</p>
+          <p><strong>It needs real credentials.</strong> `Doctor Islo` is the first honest gate: no `ISLO_API_KEY`, no fake green check.</p>
+          <p><strong>The next proof is context-aware tests.</strong> The obvious next layer is “run test under caret on Islo.”</p>
+        </div>
       </section>
     </main>
 
     <footer>
       <span>Crabbox Runner v0.2.0</span>
+      <a href="https://github.com/zozo123/rust-rover-plugin-crabbox/releases/latest">latest release</a>
       <a href="https://crabbox.sh/">crabbox.sh</a>
       <a href="https://islo.dev/">islo.dev</a>
     </footer>
