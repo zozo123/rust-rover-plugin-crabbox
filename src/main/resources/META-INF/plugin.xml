@@ -5,10 +5,10 @@
 
     <description>
         <![CDATA[
-        Run Rust and Cargo commands inside OpenClaw Crabbox remote sandboxes from
-        RustRover. The plugin delegates to the local <code>crabbox</code> CLI,
-        so Crabbox keeps ownership of auth, lease lifecycle, sync, SSH, delegated
-        providers, evidence, and cleanup.
+        Turn RustRover into a remote proof button for Rust builds and tests.
+        The plugin delegates to the local <code>crabbox</code> CLI, so Crabbox
+        keeps ownership of auth, lease lifecycle, sync, SSH, delegated providers
+        such as Islo, evidence, and cleanup.
         ]]>
     </description>
 

@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "com.incredibuild"
-version = "0.1.1"
+version = "0.2.0"
 
 repositories {
     mavenCentral()
@@ -32,13 +32,16 @@ intellijPlatform {
         }
 
         description = """
-            Run Rust and Cargo commands inside OpenClaw Crabbox remote sandboxes
-            from RustRover and other IntelliJ Platform IDEs.
+            Turn RustRover into a remote proof button for Rust builds and tests.
+            The plugin delegates to the local crabbox CLI, so Crabbox keeps
+            ownership of auth, lease lifecycle, sync, delegated providers such
+            as Islo, evidence, and cleanup.
         """.trimIndent()
 
         changeNotes = """
-            Initial MVP with Crabbox run configurations, Tools menu actions,
-            settings, and console linkification for Crabbox run output.
+            Adds the Islo setup flow, GitHub Pages branding, plugin icons,
+            Crabbox run configurations, Tools menu actions, settings, and
+            console linkification for Crabbox run output.
         """.trimIndent()
     }
 }

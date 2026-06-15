@@ -1,7 +1,7 @@
 # Crabbox Runner for RustRover
 
-Crabbox Runner makes RustRover a local editor for remote Rust execution. The
-plugin keeps the project, inspections, and normal edit loop local, then delegates
+Crabbox Runner turns RustRover into a remote proof button for Rust. The plugin
+keeps the project, inspections, and normal edit loop local, then delegates
 expensive or evidence-sensitive commands to the local `crabbox` CLI:
 
 ```bash
@@ -10,8 +10,13 @@ crabbox run -- cargo test --workspace
 crabbox run -- cargo clippy --all-targets
 ```
 
-That is the product promise: local RustRover ergonomics, remote Crabbox compute,
-sync, lease lifecycle, streamed output, durable logs, and artifacts.
+That is the product promise: click once in RustRover to prove the code you are
+editing in a real Crabbox or Islo sandbox, with streamed output and durable
+evidence coming back to the IDE.
+
+## Website
+
+https://zozo123.github.io/rust-rover-plugin-crabbox/
 
 ## Why This Shape
 
@@ -56,7 +61,7 @@ want reproducible evidence from local development and agent-assisted work.
 ## Install From GitHub
 
 1. Open the latest GitHub release.
-2. Download `crabbox-rustrover-0.1.1.zip`.
+2. Download `crabbox-rustrover-0.2.0.zip`.
 3. In RustRover, open `Settings > Plugins`.
 4. Choose the gear menu, then `Install Plugin from Disk...`.
 5. Select the downloaded zip and restart RustRover.
