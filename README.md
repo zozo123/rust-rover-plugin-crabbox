@@ -61,7 +61,7 @@ want reproducible evidence from local development and agent-assisted work.
 ## Install From GitHub
 
 1. Open the latest GitHub release.
-2. Download `crabbox-rustrover-0.2.2.zip`.
+2. Download `crabbox-rustrover-0.3.0.zip`.
 3. In RustRover, open `Settings > Plugins`.
 4. Choose the gear menu, then `Install Plugin from Disk...`.
 5. Select the downloaded zip and restart RustRover.
@@ -78,8 +78,10 @@ Open `Settings > Crabbox`:
 - `Default provider`: optional, for example `hetzner`, `aws`, or `islo`.
 - `Default class`: optional, for example `standard`, `fast`, `large`, or `beast`.
 - `Default Crabbox args`: extra flags appended before the Cargo command.
-- `Islo Rust image`: defaults to `docker.io/library/rust:1-bookworm`, so Cargo
-  is available in the remote sandbox.
+- `Islo Rust image`: defaults to
+  `ghcr.io/zozo123/rust-rover-plugin-crabbox/crabbox-rust-runner:0.3.0`, so
+  Cargo, clippy, rustfmt, nextest, OpenSSL, protobuf, and native build tools are
+  available in the remote sandbox.
 - `Islo API key`: stored in IntelliJ Password Safe and injected into Crabbox
   runs as `ISLO_API_KEY`.
 
@@ -98,8 +100,8 @@ In RustRover:
 
 1. Open `Settings > Crabbox`.
 2. Paste your Islo API key into `Islo API key`.
-3. Keep `Islo Rust image` as `docker.io/library/rust:1-bookworm`, or replace it
-   with your own baked image.
+3. Keep `Islo Rust image` as the default Crabbox Rust Runner image, or replace
+   it with your own baked image.
 4. Run `Tools > Crabbox > Doctor Islo`.
 5. Run `Tools > Crabbox > Run Islo Rust Smoke` to confirm the provider path.
 6. In a Rust project, run `Tools > Crabbox > Run Cargo Test on Islo`.
@@ -108,13 +110,30 @@ The expected CLI shape is:
 
 ```bash
 ISLO_API_KEY=... crabbox doctor --provider islo
-ISLO_API_KEY=... crabbox run --provider islo --islo-image docker.io/library/rust:1-bookworm -- cargo --version
-crabbox run --provider islo --islo-image docker.io/library/rust:1-bookworm -- cargo test
+ISLO_API_KEY=... crabbox run --provider islo --islo-image ghcr.io/zozo123/rust-rover-plugin-crabbox/crabbox-rust-runner:0.3.0 -- cargo --version
+crabbox run --provider islo --islo-image ghcr.io/zozo123/rust-rover-plugin-crabbox/crabbox-rust-runner:0.3.0 -- cargo test
 ```
 
 If the Islo provider name or account setup differs in your Crabbox deployment,
 keep the plugin unchanged and put the correct provider flags in `Default Crabbox
 args` or a saved run configuration.
+
+## Rust Runner Image
+
+The recommended use case is a dependency-heavy Rust project where local output is
+not enough proof: native crates, OpenSSL/protobuf bindings, generated code,
+agent-written tests, or `cargo nextest` suites that should run in a clean remote
+sandbox.
+
+The runner image lives in `docker/rust-runner` and is published to GHCR:
+
+```text
+ghcr.io/zozo123/rust-rover-plugin-crabbox/crabbox-rust-runner:0.3.0
+```
+
+It includes Rust stable, `clippy`, `rustfmt`, `cargo-nextest`, `clang`, `lld`,
+`mold`, `cmake`, `pkg-config`, `libssl-dev`, `protobuf-compiler`, `git`, `ssh`,
+and `rsync`.
 
 ## Build
 

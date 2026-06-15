@@ -61,7 +61,7 @@ ok      ssh-key   per-lease
 ok      provider  islo
 
 Tools > Crabbox > Run Cargo Test on Islo
---islo-image docker.io/library/rust:1-bookworm
+--islo-image ghcr.io/zozo123/rust-rover-plugin-crabbox/crabbox-rust-runner:0.3.0
 sync candidate: dirty checkout
 run_id=run_9f73c8 provider=islo
 result: ok. 48 passed; 0 failed</code></pre>
@@ -107,9 +107,28 @@ result: ok. 48 passed; 0 failed</code></pre>
         </article>
       </section>
 
+      <section class="chapter usecase">
+        <div>
+          <p class="section-number">§02 · use case</p>
+          <h2>The dependency-heavy Rust proof.</h2>
+        </div>
+        <div class="usecase-copy">
+          <p>
+            The first killer use case is not “hello world.” It is the Rust project
+            that compiles native crates, links OpenSSL, generates protobuf code,
+            and has enough tests that a laptop run is not a trustworthy boundary.
+          </p>
+          <p>
+            The plugin now defaults Islo runs to a project-owned runner image with
+            Cargo, clippy, rustfmt, nextest, clang/lld/mold, cmake, pkg-config,
+            OpenSSL headers, protobuf, git, ssh, and rsync already present.
+          </p>
+        </div>
+      </section>
+
       <section id="proof" class="chapter evidence">
         <div class="chapter-head">
-          <p class="section-number">§02 · evidence</p>
+          <p class="section-number">§03 · evidence</p>
           <h2>A useful IDE action returns more than stdout.</h2>
         </div>
         <div class="exhibit-grid">
@@ -123,20 +142,20 @@ result: ok. 48 passed; 0 failed</code></pre>
             <p class="exhibit-label">exhibit b · sandbox smoke</p>
             <h3>Rust smoke</h3>
             <p>Runs a tiny remote command to prove the provider path before spending time on a project test.</p>
-            <pre><code>crabbox run --provider islo --islo-image docker.io/library/rust:1-bookworm -- cargo --version</code></pre>
+            <pre><code>crabbox run --provider islo --islo-image ghcr.io/zozo123/rust-rover-plugin-crabbox/crabbox-rust-runner:0.3.0 -- cargo --version</code></pre>
           </article>
           <article class="exhibit">
             <p class="exhibit-label">exhibit c · project proof</p>
             <h3>Cargo test</h3>
             <p>Syncs the current checkout and runs the real Rust suite where the sandbox is the boundary.</p>
-            <pre><code>crabbox run --provider islo --islo-image docker.io/library/rust:1-bookworm -- cargo test</code></pre>
+            <pre><code>crabbox run --provider islo --islo-image ghcr.io/zozo123/rust-rover-plugin-crabbox/crabbox-rust-runner:0.3.0 -- cargo test</code></pre>
           </article>
         </div>
       </section>
 
       <section id="runbook" class="chapter runbook">
         <div>
-          <p class="section-number">§03 · runbook</p>
+          <p class="section-number">§04 · runbook</p>
           <h2>From zero to remote test.</h2>
           <p>
             This is the path the menu should make obvious. Install the zip, put
@@ -147,7 +166,7 @@ result: ok. 48 passed; 0 failed</code></pre>
         <div class="run-steps">
           <ol>
             <li><strong>Install.</strong> Download the latest release zip and install it from RustRover's plugin disk installer.</li>
-            <li><strong>Configure.</strong> Open Settings &gt; Crabbox, paste the Islo API key, and keep the Rust image default.</li>
+            <li><strong>Configure.</strong> Open Settings &gt; Crabbox, paste the Islo API key, and keep the Crabbox Rust Runner image default.</li>
             <li><strong>Preflight.</strong> Run Tools &gt; Crabbox &gt; Doctor Islo.</li>
             <li><strong>Smoke.</strong> Run Tools &gt; Crabbox &gt; Run Islo Rust Smoke.</li>
             <li><strong>Prove.</strong> Run Tools &gt; Crabbox &gt; Run Cargo Test on Islo.</li>
@@ -157,7 +176,7 @@ crabbox --version
 
 # RustRover
 Settings > Crabbox > Islo API key
-Settings > Crabbox > Islo Rust image = docker.io/library/rust:1-bookworm
+Settings > Crabbox > Islo Rust image = ghcr.io/zozo123/rust-rover-plugin-crabbox/crabbox-rust-runner:0.3.0
 Tools > Crabbox > Doctor Islo
 Tools > Crabbox > Run Cargo Test on Islo</code></pre>
         </div>
@@ -165,7 +184,7 @@ Tools > Crabbox > Run Cargo Test on Islo</code></pre>
 
       <section class="chapter contracts">
         <div class="chapter-head">
-          <p class="section-number">§04 · contracts</p>
+          <p class="section-number">§05 · contracts</p>
           <h2>Four boundaries, one run id.</h2>
         </div>
         <div class="contract-board">
@@ -178,20 +197,20 @@ Tools > Crabbox > Run Cargo Test on Islo</code></pre>
 
       <section id="caveats" class="chapter caveats">
         <div>
-          <p class="section-number">§05 · caveats</p>
+          <p class="section-number">§06 · caveats</p>
           <h2>What this proves — and what it does not.</h2>
         </div>
         <div class="caveat-list">
           <p><strong>It proves the plugin shape.</strong> RustRover can configure Islo, call Crabbox, and show the proof loop from the IDE.</p>
           <p><strong>It does not replace Crabbox.</strong> Lease logic, sync, provider behavior, artifacts, and cleanup stay in `crabbox` where they belong.</p>
-          <p><strong>It needs a real toolchain image.</strong> The default Islo Ubuntu image does not include Cargo. The plugin now sends a Rust image by default, and teams can replace it with a baked image.</p>
+          <p><strong>It needs a real toolchain image.</strong> The default Islo Ubuntu image does not include Cargo. The plugin now sends the Crabbox Rust Runner image by default, and teams can replace it with their own baked image.</p>
           <p><strong>The next proof is context-aware tests.</strong> The obvious next layer is “run test under caret on Islo.”</p>
         </div>
       </section>
     </main>
 
     <footer>
-      <span>Crabbox Runner v0.2.0</span>
+      <span>Crabbox Runner v0.3.0</span>
       <a href="https://github.com/zozo123/rust-rover-plugin-crabbox/releases/latest">latest release</a>
       <a href="https://crabbox.sh/">crabbox.sh</a>
       <a href="https://islo.dev/">islo.dev</a>

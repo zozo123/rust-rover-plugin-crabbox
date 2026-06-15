@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "com.incredibuild"
-version = "0.2.2"
+version = "0.3.0"
 
 repositories {
     mavenCentral()
@@ -39,9 +39,9 @@ intellijPlatform {
         """.trimIndent()
 
         changeNotes = """
-            Defaults Islo Rust actions to a Rust-capable image so cargo is
-            available in the sandbox. Keeps the Islo setup flow, plugin icons,
-            settings, and console linkification.
+            Defaults Islo Rust actions to the Crabbox Rust Runner image with
+            cargo, clippy, rustfmt, nextest, native build tools, OpenSSL, and
+            protobuf support. Adds the published runner image and runbook.
         """.trimIndent()
     }
 }

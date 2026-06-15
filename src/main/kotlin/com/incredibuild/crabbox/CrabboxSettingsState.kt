@@ -80,7 +80,8 @@ class CrabboxSettingsState : PersistentStateComponent<CrabboxSettingsState.State
     }
 
     companion object {
-        const val DEFAULT_ISLO_RUST_IMAGE = "docker.io/library/rust:1-bookworm"
+        const val DEFAULT_ISLO_RUST_IMAGE =
+            "ghcr.io/zozo123/rust-rover-plugin-crabbox/crabbox-rust-runner:0.3.0"
 
         fun getInstance(): CrabboxSettingsState = service()
     }
