@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "com.incredibuild"
-version = "0.3.0"
+version = "0.3.1"
 
 repositories {
     mavenCentral()
@@ -39,9 +39,9 @@ intellijPlatform {
         """.trimIndent()
 
         changeNotes = """
-            Defaults Islo Rust actions to the Crabbox Rust Runner image with
-            cargo, clippy, rustfmt, nextest, native build tools, OpenSSL, and
-            protobuf support. Adds the published runner image and runbook.
+            Updates the plugin and website logo to match the Crabbox crab mark
+            from crabbox.sh. Keeps the Crabbox Rust Runner image defaults and
+            Islo run flow.
         """.trimIndent()
     }
 }

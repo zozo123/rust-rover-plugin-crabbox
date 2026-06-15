@@ -1,18 +1,11 @@
-<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-labelledby="title desc">
   <title id="title">Crabbox Runner mark</title>
-  <desc id="desc">A crab claw shaped like a terminal prompt reaching toward a remote sandbox cube.</desc>
-  <rect width="512" height="512" rx="112" fill="#071014"/>
-  <path d="M96 333C70 270 84 194 133 144C188 88 275 78 343 120C360 131 375 145 387 162C393 170 386 182 376 180L273 162L251 194L311 205L292 236L224 222L196 263L259 276L239 309L174 292L144 337C133 354 104 352 96 333Z" fill="#F0642B"/>
-  <path d="M101 339C73 274 86 194 137 142C194 83 286 74 356 119C371 128 384 140 396 154C407 167 396 187 379 184L276 166L259 190L321 202L296 241L229 227L205 261L268 274L243 314L179 301L151 342C138 361 109 359 101 339Z" stroke="#66B9B0" stroke-width="16" stroke-linejoin="round"/>
-  <path d="M144 337L192 315H241L283 350H351" stroke="#66B9B0" stroke-width="28" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M216 191L172 223L145 276L158 320" stroke="#081014" stroke-width="18" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M219 216L259 256L219 296" stroke="#F4EFE6" stroke-width="32" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M288 301H332" stroke="#F4EFE6" stroke-width="22" stroke-linecap="round"/>
-  <path d="M358 241L423 270V350L358 382L293 350V270L358 241Z" fill="#111B20" stroke="#66B9B0" stroke-width="14" stroke-linejoin="round"/>
-  <path d="M293 270L358 300L423 270" stroke="#F4EFE6" stroke-width="12" stroke-linejoin="round"/>
-  <path d="M358 300V381" stroke="#66B9B0" stroke-width="12" stroke-linecap="round"/>
-  <path d="M326 325V347M347 334V358M382 327V359M402 318V349" stroke="#66B9B0" stroke-width="10" stroke-linecap="round"/>
-  <path d="M371 264L390 274L372 284L353 274L371 264Z" fill="#F0642B"/>
-  <circle cx="134" cy="296" r="8" fill="#071014"/>
-  <circle cx="164" cy="325" r="7" fill="#071014"/>
+  <desc id="desc">The Crabbox crab logo in a rounded dark square.</desc>
+  <rect width="120" height="120" rx="24" fill="#12211f"/>
+  <path d="M24 60c9-26 62-26 72 0 3 9-4 28-36 28S21 69 24 60Z" fill="#e35e46"/>
+  <path d="M38 55c4-8 12-13 22-13s18 5 22 13" fill="none" stroke="#fffbf4" stroke-width="6" stroke-linecap="round"/>
+  <circle cx="48" cy="62" r="5" fill="#12211f"/>
+  <circle cx="72" cy="62" r="5" fill="#12211f"/>
+  <path d="M27 54 11 42m82 12 16-12M36 82 22 96m62-14 14 14M46 86l-5 17m33-17 5 17" stroke="#fffbf4" stroke-width="7" stroke-linecap="round"/>
+  <path d="M20 35c-4-13 8-22 18-14-10 2-13 9-18 14Zm80 0c4-13-8-22-18-14 10 2 13 9 18 14Z" fill="#e35e46"/>
 </svg>
