@@ -37,6 +37,7 @@ want reproducible evidence from local development and agent-assisted work.
 ## MVP Features
 
 - `Tools > Crabbox > Doctor`
+- `Tools > Crabbox > Doctor Islo`
 - `Tools > Crabbox > Login...`
 - `Tools > Crabbox > Init Repo`
 - `Tools > Crabbox > Sync Plan`
@@ -46,6 +47,7 @@ want reproducible evidence from local development and agent-assisted work.
 - `Tools > Crabbox > Run Cargo Clippy`
 - `Tools > Crabbox > Run Cargo Nextest`
 - `Tools > Crabbox > Run Cargo Test on Islo`
+- `Tools > Crabbox > Run Islo Rust Smoke`
 - `Tools > Crabbox > Stop Lease...`
 - Persistent `Crabbox` run configurations for commands like
   `cargo test --workspace`
@@ -54,7 +56,7 @@ want reproducible evidence from local development and agent-assisted work.
 ## Install From GitHub
 
 1. Open the latest GitHub release.
-2. Download `crabbox-rustrover-0.1.0.zip`.
+2. Download `crabbox-rustrover-0.1.1.zip`.
 3. In RustRover, open `Settings > Plugins`.
 4. Choose the gear menu, then `Install Plugin from Disk...`.
 5. Select the downloaded zip and restart RustRover.
@@ -71,6 +73,8 @@ Open `Settings > Crabbox`:
 - `Default provider`: optional, for example `hetzner`, `aws`, or `islo`.
 - `Default class`: optional, for example `standard`, `fast`, `large`, or `beast`.
 - `Default Crabbox args`: extra flags appended before the Cargo command.
+- `Islo API key`: stored in IntelliJ Password Safe and injected into Crabbox
+  runs as `ISLO_API_KEY`.
 
 The plugin does not store broker tokens. Use Crabbox's own login flow.
 
@@ -86,13 +90,17 @@ crabbox doctor
 In RustRover:
 
 1. Open `Settings > Crabbox`.
-2. Set `Default provider` to `islo`, or use `Tools > Crabbox > Run Cargo Test on Islo`.
-3. Run `Tools > Crabbox > Sync Plan` and check for unexpected large files.
-4. Run `Tools > Crabbox > Run Cargo Test on Islo`.
+2. Paste your Islo API key into `Islo API key`.
+3. Optionally set `Default provider` to `islo`.
+4. Run `Tools > Crabbox > Doctor Islo`.
+5. Run `Tools > Crabbox > Run Islo Rust Smoke` to confirm the provider path.
+6. In a Rust project, run `Tools > Crabbox > Run Cargo Test on Islo`.
 
 The expected CLI shape is:
 
 ```bash
+ISLO_API_KEY=... crabbox doctor --provider islo
+ISLO_API_KEY=... crabbox run --provider islo -- rustc --version
 crabbox run --provider islo -- cargo test
 ```
 

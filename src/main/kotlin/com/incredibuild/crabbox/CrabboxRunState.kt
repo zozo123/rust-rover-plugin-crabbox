@@ -22,7 +22,7 @@ class CrabboxRunState(
                     workingDirectory = configuration.workingDirectory,
                     crabboxArgs = configuration.crabboxArgs,
                     rustCommand = configuration.rustCommand,
-                    env = configuration.env,
+                    env = CrabboxSecrets.withConfiguredSecrets(configuration.env),
                 )
 
                 CrabboxExecutionMode.SIMPLE -> CrabboxCommandLine.simple(
@@ -30,7 +30,7 @@ class CrabboxRunState(
                     crabboxExecutable = configuration.crabboxExecutable,
                     workingDirectory = configuration.workingDirectory,
                     args = CrabboxCommandLine.splitArgs(configuration.simpleArgs),
-                    env = configuration.env,
+                    env = CrabboxSecrets.withConfiguredSecrets(configuration.env),
                 )
             }
         } catch (error: IllegalArgumentException) {

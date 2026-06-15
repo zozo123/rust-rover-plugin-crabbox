@@ -27,10 +27,20 @@
             <add-to-group group-id="ToolsMenu" anchor="last"/>
 
             <action
+                id="Crabbox.Configure"
+                class="com.incredibuild.crabbox.actions.CrabboxConfigureAction"
+                text="Configure..."
+                description="Open Crabbox plugin settings"/>
+            <action
                 id="Crabbox.Doctor"
                 class="com.incredibuild.crabbox.actions.CrabboxDoctorAction"
                 text="Doctor"
                 description="Run crabbox doctor"/>
+            <action
+                id="Crabbox.DoctorIslo"
+                class="com.incredibuild.crabbox.actions.CrabboxDoctorIsloAction"
+                text="Doctor Islo"
+                description="Run crabbox doctor --provider islo with the configured Islo API key"/>
             <action
                 id="Crabbox.Login"
                 class="com.incredibuild.crabbox.actions.CrabboxLoginAction"
@@ -79,6 +89,11 @@
                 class="com.incredibuild.crabbox.actions.CrabboxRunCargoTestIsloAction"
                 text="Run Cargo Test on Islo"
                 description="Run cargo test through Crabbox with --provider islo"/>
+            <action
+                id="Crabbox.RunIsloRustSmoke"
+                class="com.incredibuild.crabbox.actions.CrabboxRunIsloRustSmokeAction"
+                text="Run Islo Rust Smoke"
+                description="Run rustc --version through Crabbox with --provider islo"/>
 
             <separator/>
 

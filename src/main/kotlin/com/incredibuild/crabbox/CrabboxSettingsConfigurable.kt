@@ -6,6 +6,7 @@ import com.intellij.ui.components.JBTextField
 import com.intellij.util.ui.FormBuilder
 import javax.swing.JComponent
 import javax.swing.JPanel
+import javax.swing.JPasswordField
 
 class CrabboxSettingsConfigurable : Configurable {
     private val executableField = JBTextField()
@@ -13,7 +14,9 @@ class CrabboxSettingsConfigurable : Configurable {
     private val defaultProviderField = JBTextField()
     private val defaultClassField = JBTextField()
     private val defaultCrabboxArgsField = JBTextField()
+    private val isloApiKeyField = JPasswordField()
     private var panel: JPanel? = null
+    private var originalIsloApiKey = ""
 
     override fun getDisplayName(): String = "Crabbox"
 
@@ -24,6 +27,8 @@ class CrabboxSettingsConfigurable : Configurable {
             .addLabeledComponent("Default provider:", defaultProviderField)
             .addLabeledComponent("Default class:", defaultClassField)
             .addLabeledComponent("Default Crabbox args:", defaultCrabboxArgsField)
+            .addSeparator()
+            .addLabeledComponent("Islo API key:", isloApiKeyField)
             .addComponentFillVertically(JPanel(), 0)
             .panel
         reset()
@@ -36,7 +41,8 @@ class CrabboxSettingsConfigurable : Configurable {
             brokerUrlField.text != state.brokerUrl ||
             defaultProviderField.text != state.defaultProvider ||
             defaultClassField.text != state.defaultClass ||
-            defaultCrabboxArgsField.text != state.defaultCrabboxArgs
+            defaultCrabboxArgsField.text != state.defaultCrabboxArgs ||
+            String(isloApiKeyField.password) != originalIsloApiKey
     }
 
     override fun apply() {
@@ -52,6 +58,8 @@ class CrabboxSettingsConfigurable : Configurable {
         state.defaultProvider = defaultProviderField.text.trim()
         state.defaultClass = defaultClassField.text.trim()
         state.defaultCrabboxArgs = defaultCrabboxArgsField.text.trim()
+        CrabboxSecrets.setIsloApiKey(String(isloApiKeyField.password))
+        originalIsloApiKey = CrabboxSecrets.getIsloApiKey()
     }
 
     override fun reset() {
@@ -61,5 +69,7 @@ class CrabboxSettingsConfigurable : Configurable {
         defaultProviderField.text = state.defaultProvider
         defaultClassField.text = state.defaultClass
         defaultCrabboxArgsField.text = state.defaultCrabboxArgs
+        originalIsloApiKey = CrabboxSecrets.getIsloApiKey()
+        isloApiKeyField.text = originalIsloApiKey
     }
 }
