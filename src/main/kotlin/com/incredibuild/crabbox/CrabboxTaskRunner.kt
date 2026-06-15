@@ -54,6 +54,7 @@ object CrabboxTaskRunner {
     private fun execute(project: Project, settings: RunnerAndConfigurationSettings) {
         val runManager = RunManager.getInstance(project)
         settings.isTemporary = true
+        runManager.setTemporaryConfiguration(settings)
         runManager.selectedConfiguration = settings
         ProgramRunnerUtil.executeConfiguration(settings, DefaultRunExecutor.getRunExecutorInstance())
     }

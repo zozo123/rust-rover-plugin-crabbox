@@ -61,7 +61,7 @@ want reproducible evidence from local development and agent-assisted work.
 ## Install From GitHub
 
 1. Open the latest GitHub release.
-2. Download `crabbox-rustrover-0.2.0.zip`.
+2. Download `crabbox-rustrover-0.2.1.zip`.
 3. In RustRover, open `Settings > Plugins`.
 4. Choose the gear menu, then `Install Plugin from Disk...`.
 5. Select the downloaded zip and restart RustRover.

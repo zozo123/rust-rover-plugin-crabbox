@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "com.incredibuild"
-version = "0.2.0"
+version = "0.2.1"
 
 repositories {
     mavenCentral()
@@ -39,9 +39,9 @@ intellijPlatform {
         """.trimIndent()
 
         changeNotes = """
-            Adds the Islo setup flow, GitHub Pages branding, plugin icons,
-            Crabbox run configurations, Tools menu actions, settings, and
-            console linkification for Crabbox run output.
+            Fixes one-shot Tools menu actions by registering temporary run
+            configurations before selection. Includes the Islo setup flow,
+            plugin icons, settings, and console linkification.
         """.trimIndent()
     }
 }
