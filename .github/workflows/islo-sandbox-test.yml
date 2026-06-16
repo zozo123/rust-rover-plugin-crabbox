@@ -38,6 +38,14 @@ jobs:
     runs-on: macos-latest
     timeout-minutes: 20
 
+    # crabbox's Go HTTP/2 client hangs on the Islo sandbox-create call
+    # ("http2: timeout awaiting response headers"), even though doctor (control-
+    # plane list/auth) succeeds. Forcing HTTP/1.1 for all crabbox calls in this
+    # job makes create/exec/teardown work. Verified locally: lease + cargo +
+    # --allow-env all succeed with this set.
+    env:
+      GODEBUG: http2client=0
+
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
