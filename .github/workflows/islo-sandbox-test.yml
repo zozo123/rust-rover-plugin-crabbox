@@ -87,21 +87,35 @@ jobs:
           set -euo pipefail
           echo "Leasing Islo box image=${ISLO_IMAGE} vcpus=${ISLO_VCPUS} memory=${ISLO_MEMORY_MB}MB"
 
-          set +e
-          crabbox run \
-            --provider islo \
-            --islo-image "${ISLO_IMAGE}" \
-            --islo-vcpus "${ISLO_VCPUS}" \
-            --islo-memory-mb "${ISLO_MEMORY_MB}" \
-            --allow-env E2E_PROOF \
-            -- bash -lc "echo \"PROOF=[\$E2E_PROOF]\" && cargo --version && cd examples/hello-crabbox && ${CARGO_COMMAND}" \
-            2>&1 | tee islo-run.log
-          run_status=${PIPESTATUS[0]}
-          set -e
-
-          echo "crabbox run exit status: ${run_status}"
+          # The Islo create call can time out awaiting response headers from this
+          # runner's network even on HTTP/1.1 (works first-try locally). Retry a
+          # few times; sweep any orphan lease between attempts so retries can't
+          # pile up billable boxes.
+          REPO="${GITHUB_REPOSITORY##*/}"
+          run_status=1
+          for attempt in 1 2 3; do
+            echo "=== crabbox run attempt ${attempt}/3 ==="
+            set +e
+            crabbox run \
+              --provider islo \
+              --islo-image "${ISLO_IMAGE}" \
+              --islo-vcpus "${ISLO_VCPUS}" \
+              --islo-memory-mb "${ISLO_MEMORY_MB}" \
+              --allow-env E2E_PROOF \
+              -- bash -lc "echo \"PROOF=[\$E2E_PROOF]\" && cargo --version && cd examples/hello-crabbox && ${CARGO_COMMAND}" \
+              2>&1 | tee islo-run.log
+            run_status=${PIPESTATUS[0]}
+            set -e
+            echo "attempt ${attempt} exit status: ${run_status}"
+            [ "${run_status}" -eq 0 ] && break
+            echo "attempt ${attempt} failed; sweeping any orphan lease before retry"
+            crabbox list --provider islo 2>/dev/null \
+              | grep -F "crabbox-${REPO}" | grep -oE 'slug=[a-z0-9-]+' | cut -d= -f2 | sort -u \
+              | while read -r s; do [ -n "$s" ] && crabbox stop --provider islo --id "$s" || true; done
+            sleep 5
+          done
           if [ "${run_status}" -ne 0 ]; then
-            echo "::error::crabbox run exited non-zero (${run_status})."
+            echo "::error::crabbox run failed after 3 attempts (last status ${run_status})."
             exit "${run_status}"
           fi
 
