@@ -132,18 +132,36 @@ jobs:
           ISLO_API_KEY: ${{ secrets.ISLO_API_KEY }}
         run: |
           set +e
+          REPO="${GITHUB_REPOSITORY##*/}"
+
+          # 1) Primary: stop by the slug parsed from the run log.
           if [ -f islo-run.log ]; then
             SLUG="$(grep -oE 'slug=[a-z0-9-]+' islo-run.log | head -n1 | cut -d= -f2)"
           fi
           if [ -n "${SLUG:-}" ]; then
-            echo "Releasing Islo lease slug=${SLUG}"
-            crabbox stop --provider islo --id "${SLUG}" || echo "stop reported the lease already gone."
+            echo "Stopping lease by logged slug=${SLUG}"
+            crabbox stop --provider islo --id "${SLUG}" || echo "(already gone)"
           else
-            echo "No lease slug found in the log (run may not have provisioned)."
+            echo "No slug in the log (e.g. the create API timed out before logging one)."
           fi
 
-          echo "== remaining Islo leases =="
-          crabbox list --provider islo || echo "crabbox list returned nothing or is unavailable."
+          # 2) Fallback sweep: the Islo API can create the box but time out before
+          # the CLI logs a slug, leaving a billing orphan the log-parse misses.
+          # crabbox names Islo leases crabbox-<repo>-<hash>, so match this repo and
+          # stop every matching lease. The concurrency group guarantees no other
+          # run of THIS workflow is live, so matching by repo name is safe.
+          echo "Sweeping any Islo lease named crabbox-${REPO}-*"
+          crabbox list --provider islo 2>/dev/null \
+            | grep -F "crabbox-${REPO}" \
+            | grep -oE 'slug=[a-z0-9-]+' | cut -d= -f2 | sort -u \
+            | while read -r s; do
+                [ -n "$s" ] || continue
+                echo "stopping stray slug=$s"
+                crabbox stop --provider islo --id "$s" || echo "(already gone: $s)"
+              done
+
+          echo "== remaining Islo leases for this repo (should be none) =="
+          crabbox list --provider islo 2>/dev/null | grep -F "crabbox-${REPO}" || echo "none"
 
       - name: Upload run log
         if: always()
