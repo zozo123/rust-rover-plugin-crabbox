@@ -81,7 +81,7 @@ class CrabboxSettingsState : PersistentStateComponent<CrabboxSettingsState.State
 
     companion object {
         const val DEFAULT_ISLO_RUST_IMAGE =
-            "ghcr.io/zozo123/rust-rover-plugin-crabbox/crabbox-rust-runner:0.3.2"
+            "ghcr.io/zozo123/rust-rover-plugin-crabbox/crabbox-rust-runner:0.3.4"
 
         fun getInstance(): CrabboxSettingsState = service()
     }

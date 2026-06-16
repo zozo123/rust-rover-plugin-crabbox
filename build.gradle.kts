@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "com.incredibuild"
-version = "0.3.3"
+version = "0.3.4"
 
 repositories {
     mavenCentral()
@@ -19,6 +19,8 @@ dependencies {
         intellijIdea("2025.2.6.1")
         testFramework(org.jetbrains.intellij.platform.gradle.TestFrameworkType.Platform)
     }
+
+    testImplementation("junit:junit:4.13.2")
 }
 
 intellijPlatform {
@@ -39,11 +41,13 @@ intellijPlatform {
         """.trimIndent()
 
         changeNotes = """
-            Crabbox runs the command from the git repository root. Cargo actions
-            now cd into the crate's manifest directory when it lives in a
-            subdirectory, so Run Cargo Test works for monorepo crates and the
-            bundled examples/hello-crabbox demo. Also fixes a Settings dialog
-            that reported unsaved changes for the Islo image field on open.
+            Run-configuration environment variables now reach the remote command:
+            the plugin emits a --allow-env flag for each user-defined variable, so
+            Crabbox forwards them past its deliberately narrow default allowlist
+            instead of silently dropping them before Cargo runs. The default Islo
+            Rust image now tracks the plugin version (0.3.4). Adds the project's
+            first unit tests covering command parsing, env forwarding, and
+            git-root manifest resolution.
         """.trimIndent()
     }
 }

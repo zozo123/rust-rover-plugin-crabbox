@@ -23,6 +23,10 @@ class CrabboxRunState(
                     crabboxArgs = configuration.crabboxArgs,
                     rustCommand = configuration.rustCommand,
                     env = CrabboxSecrets.withConfiguredSecrets(configuration.env),
+                    // Forward only the user-declared env vars to the remote command.
+                    // ISLO_API_KEY is consumed locally by the crabbox CLI for auth and
+                    // must not be whitelisted into the sandbox.
+                    allowEnv = configuration.env.keys,
                 )
 
                 CrabboxExecutionMode.SIMPLE -> CrabboxCommandLine.simple(
