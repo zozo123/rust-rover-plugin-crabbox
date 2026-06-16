@@ -61,7 +61,7 @@ want reproducible evidence from local development and agent-assisted work.
 ## Install From GitHub
 
 1. Open the latest GitHub release.
-2. Download `crabbox-rustrover-0.3.3.zip`.
+2. Download `crabbox-rustrover-0.3.4.zip`.
 3. In RustRover, open `Settings > Plugins`.
 4. Choose the gear menu, then `Install Plugin from Disk...`.
 5. Select the downloaded zip and restart RustRover.
@@ -79,7 +79,7 @@ Open `Settings > Crabbox`:
 - `Default class`: optional, for example `standard`, `fast`, `large`, or `beast`.
 - `Default Crabbox args`: extra flags appended before the Cargo command.
 - `Islo Rust image`: defaults to
-  `ghcr.io/zozo123/rust-rover-plugin-crabbox/crabbox-rust-runner:0.3.2`, so
+  `ghcr.io/zozo123/rust-rover-plugin-crabbox/crabbox-rust-runner:0.3.4`, so
   Cargo, clippy, rustfmt, nextest, OpenSSL, protobuf, and native build tools are
   available in the remote sandbox.
 - `Islo API key`: stored in IntelliJ Password Safe and injected into Crabbox
@@ -110,8 +110,8 @@ The expected CLI shape is:
 
 ```bash
 ISLO_API_KEY=... crabbox doctor --provider islo
-ISLO_API_KEY=... crabbox run --provider islo --islo-image ghcr.io/zozo123/rust-rover-plugin-crabbox/crabbox-rust-runner:0.3.2 -- cargo --version
-crabbox run --provider islo --islo-image ghcr.io/zozo123/rust-rover-plugin-crabbox/crabbox-rust-runner:0.3.2 -- cargo test
+ISLO_API_KEY=... crabbox run --provider islo --islo-image ghcr.io/zozo123/rust-rover-plugin-crabbox/crabbox-rust-runner:0.3.4 -- cargo --version
+crabbox run --provider islo --islo-image ghcr.io/zozo123/rust-rover-plugin-crabbox/crabbox-rust-runner:0.3.4 -- cargo test
 ```
 
 If the Islo provider name or account setup differs in your Crabbox deployment,
@@ -139,7 +139,7 @@ provider (the same sync + image + `cargo test` path Islo uses):
 ```bash
 crabbox run \
   --provider local-container \
-  --local-container-image ghcr.io/zozo123/rust-rover-plugin-crabbox/crabbox-rust-runner:0.3.2 \
+  --local-container-image ghcr.io/zozo123/rust-rover-plugin-crabbox/crabbox-rust-runner:0.3.4 \
   -- bash -lc 'cd examples/hello-crabbox && cargo test'
 # Compiling hello-crabbox v0.1.0
 # test result: ok. 2 passed; 0 failed
@@ -151,7 +151,7 @@ To run it on Islo, swap the provider and image flags:
 ```bash
 crabbox run \
   --provider islo \
-  --islo-image ghcr.io/zozo123/rust-rover-plugin-crabbox/crabbox-rust-runner:0.3.2 \
+  --islo-image ghcr.io/zozo123/rust-rover-plugin-crabbox/crabbox-rust-runner:0.3.4 \
   -- bash -lc 'cd examples/hello-crabbox && cargo test'
 ```
 
@@ -165,7 +165,7 @@ sandbox.
 The runner image lives in `docker/rust-runner` and is published to GHCR:
 
 ```text
-ghcr.io/zozo123/rust-rover-plugin-crabbox/crabbox-rust-runner:0.3.2
+ghcr.io/zozo123/rust-rover-plugin-crabbox/crabbox-rust-runner:0.3.4
 ```
 
 It includes Rust stable, `clippy`, `rustfmt`, `cargo-nextest`, `clang`, `lld`,
