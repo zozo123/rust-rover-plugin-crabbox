@@ -1,0 +1,154 @@
+name: Islo Sandbox Test (manual, billable)
+
+# WARNING: this workflow leases a REAL Islo cloud box. Running it COSTS MONEY and
+# hits the network. It is therefore manual-dispatch only and is NEVER triggered
+# by push or pull_request.
+on:
+  workflow_dispatch:
+    inputs:
+      islo_image:
+        description: "Islo OCI image to lease"
+        required: false
+        default: "ghcr.io/zozo123/rust-rover-plugin-crabbox/crabbox-rust-runner:0.3.4"
+      islo_vcpus:
+        description: "vCPUs for the Islo box"
+        required: false
+        default: "2"
+      islo_memory_mb:
+        description: "Memory for the Islo box (MB)"
+        required: false
+        default: "4096"
+      cargo_command:
+        description: "Cargo command to run inside examples/hello-crabbox"
+        required: false
+        default: "cargo test"
+
+# Never let two billable leases overlap. cancel-in-progress is false on purpose:
+# cancelling mid-lease could orphan a running (billing) box.
+concurrency:
+  group: islo-sandbox-test
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  islo-run:
+    name: Real Islo lease and cargo run
+    runs-on: macos-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Verify ISLO_API_KEY is present
+        env:
+          ISLO_API_KEY: ${{ secrets.ISLO_API_KEY }}
+        run: |
+          if [ -z "${ISLO_API_KEY}" ]; then
+            echo "::error::ISLO_API_KEY secret is empty. Set it (gh secret set ISLO_API_KEY) before running this billable workflow."
+            exit 1
+          fi
+          echo "ISLO_API_KEY is set (length ${#ISLO_API_KEY})."
+
+      - name: Install crabbox
+        run: brew install openclaw/tap/crabbox
+
+      - name: crabbox --version
+        run: crabbox --version
+
+      - name: crabbox doctor (islo provider)
+        env:
+          ISLO_API_KEY: ${{ secrets.ISLO_API_KEY }}
+        run: crabbox doctor --provider islo
+
+      - name: Real Islo run (cargo) with --allow-env proof
+        id: islo_run
+        env:
+          ISLO_API_KEY: ${{ secrets.ISLO_API_KEY }}
+          # Unique token so the proof can only match genuine end-to-end forwarding.
+          # NOTE: must NOT be in crabbox's reserved CRABBOX_* namespace, or the
+          # reference arrives at the remote shell un-expanded.
+          E2E_PROOF: islo-proof-${{ github.run_id }}-${{ github.run_attempt }}
+          ISLO_IMAGE: ${{ inputs.islo_image }}
+          ISLO_VCPUS: ${{ inputs.islo_vcpus }}
+          ISLO_MEMORY_MB: ${{ inputs.islo_memory_mb }}
+          CARGO_COMMAND: ${{ inputs.cargo_command }}
+        run: |
+          set -euo pipefail
+          echo "Leasing Islo box image=${ISLO_IMAGE} vcpus=${ISLO_VCPUS} memory=${ISLO_MEMORY_MB}MB"
+
+          set +e
+          crabbox run \
+            --provider islo \
+            --islo-image "${ISLO_IMAGE}" \
+            --islo-vcpus "${ISLO_VCPUS}" \
+            --islo-memory-mb "${ISLO_MEMORY_MB}" \
+            --allow-env E2E_PROOF \
+            -- bash -lc "echo \"PROOF=[\$E2E_PROOF]\" && cargo --version && cd examples/hello-crabbox && ${CARGO_COMMAND}" \
+            2>&1 | tee islo-run.log
+          run_status=${PIPESTATUS[0]}
+          set -e
+
+          echo "crabbox run exit status: ${run_status}"
+          if [ "${run_status}" -ne 0 ]; then
+            echo "::error::crabbox run exited non-zero (${run_status})."
+            exit "${run_status}"
+          fi
+
+          if [ -z "${E2E_PROOF}" ]; then
+            echo "::error::E2E_PROOF is empty on the runner; the test would be meaningless."
+            exit 1
+          fi
+          # Reject the empty-forward case: if --allow-env did not forward the var,
+          # the remote echo prints PROOF=[] (the command-echo log line shows the
+          # literal $E2E_PROOF, never PROOF=[]).
+          if grep -qF "PROOF=[]" islo-run.log; then
+            echo "::error::Saw PROOF=[] in remote output: --allow-env did NOT forward E2E_PROOF."
+            exit 1
+          fi
+          EXPECTED="PROOF=[${E2E_PROOF}]"
+          if ! grep -qF "${EXPECTED}" islo-run.log; then
+            echo "::error::Proof token '${EXPECTED}' not found: env not forwarded end to end."
+            exit 1
+          fi
+          echo "Verified env forwarding: found '${EXPECTED}'."
+
+          if ! grep -qE "test result: ok|Compiling|Finished" islo-run.log; then
+            echo "::error::Did not find cargo success markers (test result: ok / Finished)."
+            exit 1
+          fi
+          echo "Verified cargo success markers."
+
+      # Guaranteed teardown. `crabbox run` self-cleans on success, but a timeout
+      # or cancellation can kill it before it releases — orphaning a BILLABLE
+      # box. This always-run step parses the lease slug from the log (crabbox
+      # prints `slug=` at provisioning, ~1s in, so it survives a kill) and stops
+      # it. `crabbox stop` is idempotent: it exits 0 even if already released.
+      - name: Release Islo lease and verify clean
+        if: always()
+        env:
+          ISLO_API_KEY: ${{ secrets.ISLO_API_KEY }}
+        run: |
+          set +e
+          if [ -f islo-run.log ]; then
+            SLUG="$(grep -oE 'slug=[a-z0-9-]+' islo-run.log | head -n1 | cut -d= -f2)"
+          fi
+          if [ -n "${SLUG:-}" ]; then
+            echo "Releasing Islo lease slug=${SLUG}"
+            crabbox stop --provider islo --id "${SLUG}" || echo "stop reported the lease already gone."
+          else
+            echo "No lease slug found in the log (run may not have provisioned)."
+          fi
+
+          echo "== remaining Islo leases =="
+          crabbox list --provider islo || echo "crabbox list returned nothing or is unavailable."
+
+      - name: Upload run log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: islo-run-log
+          path: islo-run.log
+          if-no-files-found: ignore
