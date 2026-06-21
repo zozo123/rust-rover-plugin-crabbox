@@ -9,7 +9,7 @@ on:
       islo_image:
         description: "Islo OCI image to lease"
         required: false
-        default: "ghcr.io/zozo123/rust-rover-plugin-crabbox/crabbox-rust-runner:0.3.4"
+        default: "ghcr.io/zozo123/rust-rover-plugin-crabbox/crabbox-rust-runner:0.3.5"
       islo_vcpus:
         description: "vCPUs for the Islo box"
         required: false

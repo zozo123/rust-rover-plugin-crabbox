@@ -17,7 +17,7 @@ It is intentionally more than `rust:1-bookworm`:
 The plugin defaults Islo Rust actions to:
 
 ```text
-ghcr.io/zozo123/rust-rover-plugin-crabbox/crabbox-rust-runner:0.3.2
+ghcr.io/zozo123/rust-rover-plugin-crabbox/crabbox-rust-runner:0.3.5
 ```
 
 Manual smoke:

@@ -39,13 +39,34 @@ object CrabboxCommandLine {
             "Do not include -- in Crabbox args; the plugin inserts the command separator."
         }
 
-        return base(project, crabboxExecutable, workingDirectory, env).apply {
+        return base(project, crabboxExecutable, workingDirectory, forceHttp1ForIslo(env, crabboxArgs)).apply {
             addParameter("run")
             crabboxArgs.forEach(::addParameter)
             allowEnvArgs(crabboxArgs, allowEnv).forEach(::addParameter)
             addParameter("--")
             rustCommand.forEach(::addParameter)
         }
+    }
+
+    /**
+     * crabbox's Go HTTP/2 client hangs on the Islo sandbox-create call
+     * ("http2: timeout awaiting response headers") even though `doctor` (which
+     * only hits the control plane) succeeds. Forcing HTTP/1.1 via
+     * GODEBUG=http2client=0 fixes it. Apply it only when the run targets Islo,
+     * and never override a GODEBUG the user already set.
+     */
+    fun forceHttp1ForIslo(env: Map<String, String>, args: List<String>): Map<String, String> {
+        if (env.containsKey("GODEBUG")) return env
+        // Match the provider value precisely (the bare "islo" after --provider, or
+        // --provider=islo) or the islo-only --islo-image flag. Do NOT use a loose
+        // "contains islo" check: that would also fire on --islo-vcpus /
+        // --islo-base-url, etc., which can appear with a non-Islo provider.
+        val targetsIslo = args.any { arg ->
+            arg.equals("islo", ignoreCase = true) ||
+                arg.equals("--provider=islo", ignoreCase = true) ||
+                arg.startsWith("--islo-image", ignoreCase = true)
+        }
+        return if (targetsIslo) env + ("GODEBUG" to "http2client=0") else env
     }
 
     /**
@@ -96,7 +117,7 @@ object CrabboxCommandLine {
     ): GeneralCommandLine {
         require(args.isNotEmpty()) { "Crabbox command is required" }
 
-        return base(project, crabboxExecutable, workingDirectory, env).apply {
+        return base(project, crabboxExecutable, workingDirectory, forceHttp1ForIslo(env, args)).apply {
             args.forEach(::addParameter)
         }
     }

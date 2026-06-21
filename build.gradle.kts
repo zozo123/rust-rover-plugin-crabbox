@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "com.incredibuild"
-version = "0.3.4"
+version = "0.3.5"
 
 repositories {
     mavenCentral()
@@ -41,13 +41,12 @@ intellijPlatform {
         """.trimIndent()
 
         changeNotes = """
-            Run-configuration environment variables now reach the remote command:
-            the plugin emits a --allow-env flag for each user-defined variable, so
-            Crabbox forwards them past its deliberately narrow default allowlist
-            instead of silently dropping them before Cargo runs. The default Islo
-            Rust image now tracks the plugin version (0.3.4). Adds the project's
-            first unit tests covering command parsing, env forwarding, and
-            git-root manifest resolution.
+            Islo runs now work from the IDE: the plugin sets GODEBUG=http2client=0
+            for Islo commands so crabbox's HTTP/2 client no longer hangs on the
+            sandbox-create call ("http2: timeout awaiting response headers"). It is
+            scoped to Islo runs and never overrides a GODEBUG you set yourself.
+            Verified end to end against a real Islo sandbox (lease + cargo test +
+            env forwarding). The default Islo Rust image tracks the version (0.3.5).
         """.trimIndent()
     }
 }

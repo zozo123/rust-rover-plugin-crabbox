@@ -89,4 +89,67 @@ class CrabboxCommandLineTest {
             CrabboxCommandLine.allowEnvArgs(emptyList(), listOf("", "   ", "FOO")),
         )
     }
+
+    @Test
+    fun `forceHttp1ForIslo adds GODEBUG for islo runs`() {
+        assertEquals(
+            mapOf("GODEBUG" to "http2client=0"),
+            CrabboxCommandLine.forceHttp1ForIslo(emptyMap(), listOf("--provider", "islo")),
+        )
+    }
+
+    @Test
+    fun `forceHttp1ForIslo detects the islo image flag`() {
+        assertEquals(
+            mapOf("A" to "b", "GODEBUG" to "http2client=0"),
+            CrabboxCommandLine.forceHttp1ForIslo(mapOf("A" to "b"), listOf("--islo-image", "ghcr.io/x/y:1")),
+        )
+    }
+
+    @Test
+    fun `forceHttp1ForIslo leaves non-islo runs untouched`() {
+        assertEquals(
+            mapOf("A" to "b"),
+            CrabboxCommandLine.forceHttp1ForIslo(mapOf("A" to "b"), listOf("--provider", "hetzner")),
+        )
+    }
+
+    @Test
+    fun `forceHttp1ForIslo never overrides a user-set GODEBUG`() {
+        assertEquals(
+            mapOf("GODEBUG" to "asyncpreemptoff=1"),
+            CrabboxCommandLine.forceHttp1ForIslo(mapOf("GODEBUG" to "asyncpreemptoff=1"), listOf("--provider", "islo")),
+        )
+    }
+
+    @Test
+    fun `forceHttp1ForIslo does not fire on islo flags with a non-islo provider`() {
+        // --islo-vcpus etc. can appear with another provider; must NOT force HTTP/1.1.
+        assertEquals(
+            emptyMap<String, String>(),
+            CrabboxCommandLine.forceHttp1ForIslo(emptyMap(), listOf("--provider", "hetzner", "--islo-vcpus", "4", "--islo-base-url", "https://api.islo.dev")),
+        )
+    }
+
+    @Test
+    fun `forceHttp1ForIslo handles the provider=islo form and is case-insensitive`() {
+        assertEquals(
+            mapOf("GODEBUG" to "http2client=0"),
+            CrabboxCommandLine.forceHttp1ForIslo(emptyMap(), listOf("--provider=islo")),
+        )
+        assertEquals(
+            mapOf("GODEBUG" to "http2client=0"),
+            CrabboxCommandLine.forceHttp1ForIslo(emptyMap(), listOf("--provider", "ISLO")),
+        )
+    }
+
+    @Test
+    fun `forceHttp1ForIslo fires for args built from the islo settings path`() {
+        // Mirrors CrabboxSettingsState.isloRunArgs(): --provider islo + --islo-image.
+        val args = listOf("--provider", "islo", "--islo-image", "ghcr.io/x/y:1")
+        assertEquals(
+            mapOf("GODEBUG" to "http2client=0"),
+            CrabboxCommandLine.forceHttp1ForIslo(emptyMap(), args),
+        )
+    }
 }

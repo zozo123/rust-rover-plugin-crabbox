@@ -37,7 +37,7 @@ at the runner image that ships `cargo`/`clippy`/`nextest`:
 
 ```bash
 crabbox run --provider apple-container \
-  --apple-container-image ghcr.io/zozo123/rust-rover-plugin-crabbox/crabbox-rust-runner:0.3.4 \
+  --apple-container-image ghcr.io/zozo123/rust-rover-plugin-crabbox/crabbox-rust-runner:0.3.5 \
   -- bash -lc 'cd examples/hello-crabbox && cargo test'
 ```
 
@@ -51,7 +51,7 @@ box and hits the network — there is no free tier on this path.
 
 ```bash
 ISLO_API_KEY=… crabbox run --provider islo \
-  --islo-image ghcr.io/zozo123/rust-rover-plugin-crabbox/crabbox-rust-runner:0.3.4 \
+  --islo-image ghcr.io/zozo123/rust-rover-plugin-crabbox/crabbox-rust-runner:0.3.5 \
   --allow-env E2E_PROOF \
   -- bash -lc 'cd examples/hello-crabbox && cargo test'
 ```
