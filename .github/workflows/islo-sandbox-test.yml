@@ -35,7 +35,10 @@ permissions:
 jobs:
   islo-run:
     name: Real Islo lease and cargo run
-    runs-on: macos-latest
+    # ubuntu-latest: the macOS runner's network path to api.islo.dev consistently
+    # timed out on sandbox-create while the same command succeeds locally; Linux
+    # runners use a different egress. Cheaper per minute too.
+    runs-on: ubuntu-latest
     timeout-minutes: 20
 
     # crabbox's Go HTTP/2 client hangs on the Islo sandbox-create call
@@ -61,7 +64,13 @@ jobs:
           echo "ISLO_API_KEY is set (length ${#ISLO_API_KEY})."
 
       - name: Install crabbox
-        run: brew install openclaw/tap/crabbox
+        run: |
+          ver=0.26.0
+          url="https://github.com/openclaw/crabbox/releases/download/v${ver}/crabbox_${ver}_linux_amd64.tar.gz"
+          curl -fsSL "$url" -o /tmp/crabbox.tgz
+          echo "674e3f1f1a502dc30ea11e32139acc92007af86b60f1b4c8488de972e8a1e76e  /tmp/crabbox.tgz" | sha256sum -c -
+          tar -xzf /tmp/crabbox.tgz -C /tmp
+          sudo install /tmp/crabbox /usr/local/bin/crabbox
 
       - name: crabbox --version
         run: crabbox --version
