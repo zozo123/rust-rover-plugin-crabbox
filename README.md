@@ -1,8 +1,9 @@
 # Crabbox Runner for RustRover
 
-Crabbox Runner turns RustRover into a remote proof button for Rust. The plugin
-keeps the project, inspections, and normal edit loop local, then delegates
-expensive or evidence-sensitive commands to the local `crabbox` CLI:
+Crabbox Runner is an MVP RustRover plugin (v0.3.5) that turns RustRover into a
+remote proof button for Rust. The plugin keeps the project, inspections, and
+normal edit loop local, then delegates expensive or evidence-sensitive commands
+to the local `crabbox` CLI:
 
 ```bash
 crabbox run -- cargo test
@@ -10,9 +11,14 @@ crabbox run -- cargo test --workspace
 crabbox run -- cargo clippy --all-targets
 ```
 
-That is the product promise: click once in RustRover to prove the code you are
-editing in a real Crabbox or Islo sandbox, with streamed output and durable
-evidence coming back to the IDE.
+The goal: click once in RustRover to prove the code you are editing in a real
+Crabbox or Islo sandbox, with streamed output and durable evidence coming back
+to the IDE.
+
+Built on [OpenClaw Crabbox](https://github.com/openclaw/crabbox) (MIT). This
+plugin is a separate project by Yossi Eliaz and is not part of Crabbox.
+Disclosure: the author is Principal Engineer, AI Systems at Incredibuild /
+islo.dev.
 
 ## Website
 

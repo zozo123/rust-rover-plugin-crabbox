@@ -5,9 +5,51 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta
       name="description"
-      content="Crabbox Runner turns RustRover into a remote proof button for Rust builds and tests, powered by crabbox.sh and Islo sandboxes."
+      content="MVP RustRover plugin by Yossi Eliaz that runs cargo test and clippy through the OpenClaw Crabbox CLI on remote Crabbox runners or Islo sandboxes."
     />
-    <title>Crabbox Runner for RustRover</title>
+    <title>Crabbox Runner for RustRover · Yossi Eliaz</title>
+    <link rel="canonical" href="https://zozo123.github.io/rust-rover-plugin-crabbox/" />
+    <meta name="author" content="Yossi Eliaz" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Yossi Eliaz" />
+    <meta property="og:title" content="Crabbox Runner for RustRover" />
+    <meta
+      property="og:description"
+      content="MVP RustRover plugin by Yossi Eliaz that runs cargo test and clippy through the OpenClaw Crabbox CLI on remote Crabbox runners or Islo sandboxes."
+    />
+    <meta property="og:url" content="https://zozo123.github.io/rust-rover-plugin-crabbox/" />
+    <meta property="og:image" content="https://zozo123.github.io/rust-rover-plugin-crabbox/assets/og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Crabbox Runner for RustRover, an MVP plugin by Yossi Eliaz" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Crabbox Runner for RustRover" />
+    <meta
+      name="twitter:description"
+      content="MVP RustRover plugin by Yossi Eliaz that runs cargo test and clippy through the OpenClaw Crabbox CLI on remote Crabbox runners or Islo sandboxes."
+    />
+    <meta name="twitter:image" content="https://zozo123.github.io/rust-rover-plugin-crabbox/assets/og.png" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareSourceCode",
+        "name": "Crabbox Runner for RustRover",
+        "description": "MVP RustRover plugin that runs Cargo commands through the OpenClaw Crabbox CLI on remote Crabbox runners or Islo sandboxes.",
+        "codeRepository": "https://github.com/zozo123/rust-rover-plugin-crabbox",
+        "programmingLanguage": "Kotlin",
+        "version": "0.3.5",
+        "isBasedOn": "https://github.com/openclaw/crabbox",
+        "url": "https://zozo123.github.io/rust-rover-plugin-crabbox/",
+        "datePublished": "2026-06-15",
+        "dateModified": "2026-06-21",
+        "author": {
+          "@type": "Person",
+          "name": "Yossi Eliaz",
+          "url": "https://yossieliaz.netlify.app/",
+          "sameAs": ["https://github.com/zozo123", "https://www.linkedin.com/in/yossi-eliaz/"]
+        }
+      }
+    </script>
     <link rel="icon" href="assets/crabbox-runner-mark.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="styles.css" />
   </head>
@@ -30,9 +72,13 @@
     <main>
       <section class="hero">
         <div class="hero-copy">
-          <p class="mission">ZOZO123 · FIELD PAGE · 2026</p>
+          <p class="mission"><a href="https://zozo123.github.io/">Yossi Eliaz</a> · field page · June 2026</p>
           <p class="eyebrow">RustRover × crabbox.sh × islo.dev</p>
           <h1>The Run button should prove the code.</h1>
+          <p class="credit">
+            Built on <a href="https://github.com/openclaw/crabbox">OpenClaw Crabbox</a> (MIT).
+            This plugin is a separate project by Yossi Eliaz and is not part of Crabbox.
+          </p>
           <p class="lede">
             Crabbox Runner turns RustRover into a cockpit for remote execution:
             edit locally, sync the dirty checkout through Crabbox, run inside an
@@ -47,7 +93,7 @@
           </div>
         </div>
 
-        <div class="terminal-card" aria-label="Crabbox run example">
+        <div class="terminal-card" role="group" aria-label="Crabbox run example">
           <div class="terminal-top">
             <span></span><span></span><span></span>
             <strong>RustRover Run Console</strong>
@@ -99,7 +145,7 @@ run summary command=2.67s exit=0  # verified</code></pre>
         <article>
           <span class="card-index">02</span>
           <h3>Run remote</h3>
-          <p>Crabbox syncs the dirty checkout and runs `cargo test`, `cargo clippy`, or a smoke probe.</p>
+          <p>Crabbox syncs the dirty checkout and runs <code>cargo test</code>, <code>cargo clippy</code>, or a smoke probe.</p>
         </article>
         <article>
           <span class="card-index">03</span>
@@ -203,9 +249,10 @@ Tools > Crabbox > Run Cargo Test on Islo</code></pre>
         </div>
         <div class="caveat-list">
           <p><strong>It proves the plugin shape.</strong> RustRover can configure Islo, call Crabbox, and show the proof loop from the IDE.</p>
-          <p><strong>It does not replace Crabbox.</strong> Lease logic, sync, provider behavior, artifacts, and cleanup stay in `crabbox` where they belong.</p>
+          <p><strong>It does not replace Crabbox.</strong> Lease logic, sync, provider behavior, artifacts, and cleanup stay in <code>crabbox</code> where they belong.</p>
           <p><strong>It needs a real toolchain image.</strong> The default Islo Ubuntu image does not include Cargo. The plugin now sends the Crabbox Rust Runner image by default, and teams can replace it with their own baked image.</p>
           <p><strong>The next proof is context-aware tests.</strong> The obvious next layer is “run test under caret on Islo.”</p>
+          <p><strong>Disclosure.</strong> The author is Principal Engineer, AI Systems at Incredibuild / islo.dev.</p>
         </div>
       </section>
     </main>
@@ -215,6 +262,9 @@ Tools > Crabbox > Run Cargo Test on Islo</code></pre>
       <a href="https://github.com/zozo123/rust-rover-plugin-crabbox/releases/latest">latest release</a>
       <a href="https://crabbox.sh/">crabbox.sh</a>
       <a href="https://islo.dev/">islo.dev</a>
+      <a href="https://github.com/openclaw/crabbox">OpenClaw Crabbox</a>
+      <a href="https://zozo123.github.io/">Writing</a>
+      <a href="https://yossieliaz.netlify.app/">Yossi Eliaz</a>
     </footer>
   </body>
 </html>

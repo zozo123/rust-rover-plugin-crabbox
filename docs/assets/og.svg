@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="t d">
+  <title id="t">Crabbox Runner for RustRover · Yossi Eliaz</title>
+  <desc id="d">Share card: MVP RustRover plugin that runs Cargo commands through the OpenClaw Crabbox CLI on remote Crabbox runners or Islo sandboxes.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#061014"/>
+      <stop offset="0.5" stop-color="#0c1d22"/>
+      <stop offset="1" stop-color="#071014"/>
+    </linearGradient>
+    <radialGradient id="rust" cx="0.18" cy="0.18" r="0.42">
+      <stop offset="0" stop-color="#f0642b" stop-opacity="0.32"/>
+      <stop offset="1" stop-color="#f0642b" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="teal" cx="0.82" cy="0.06" r="0.42">
+      <stop offset="0" stop-color="#66b9b0" stop-opacity="0.36"/>
+      <stop offset="1" stop-color="#66b9b0" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#66b9b0" stop-opacity="0.35"/>
+      <stop offset="1" stop-color="#66b9b0" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="grid" width="47" height="47" patternUnits="userSpaceOnUse">
+      <path d="M47 0H0V47" fill="none" stroke="#ffffff" stroke-opacity="0.045" stroke-width="1"/>
+    </pattern>
+    <linearGradient id="edge" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#66b9b0"/>
+      <stop offset="0.4" stop-color="#66b9b0" stop-opacity="0"/>
+      <stop offset="1" stop-color="#f0642b"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#rust)"/>
+  <rect width="1200" height="630" fill="url(#teal)"/>
+  <rect width="1200" height="630" fill="url(#grid)"/>
+
+  <!-- mission line -->
+  <text x="72" y="96" font-family="Menlo, monospace" font-size="18" font-weight="bold" letter-spacing="3.2" fill="#f0642b">YOSSI ELIAZ · FIELD PAGE · JUNE 2026</text>
+  <text x="72" y="132" font-family="Menlo, monospace" font-size="16" font-weight="bold" letter-spacing="2.6" fill="#66b9b0">MVP · RUSTROVER × OPENCLAW CRABBOX × ISLO</text>
+
+  <!-- title -->
+  <text font-family="Georgia, serif" font-weight="bold" font-size="86" letter-spacing="-3" fill="#f4efe6">
+    <tspan x="68" y="262">Crabbox Runner</tspan>
+    <tspan x="68" y="352">for RustRover</tspan>
+  </text>
+
+  <!-- summary -->
+  <text font-family="Menlo, monospace" font-size="22" fill="#c3d6d3">
+    <tspan x="72" y="424">Runs cargo test and clippy through the</tspan>
+    <tspan x="72" y="458">OpenClaw Crabbox CLI on remote Crabbox</tspan>
+    <tspan x="72" y="492">runners or Islo sandboxes.</tspan>
+  </text>
+
+  <!-- crab mark -->
+  <circle cx="960" cy="300" r="190" fill="url(#glow)"/>
+  <rect x="848" y="188" width="224" height="224" rx="46" fill="url(#edge)" opacity="0.55"/>
+  <g transform="translate(850 190) scale(1.833)">
+    <rect width="120" height="120" rx="24" fill="#12211f"/>
+    <path d="M24 60c9-26 62-26 72 0 3 9-4 28-36 28S21 69 24 60Z" fill="#e35e46"/>
+    <path d="M38 55c4-8 12-13 22-13s18 5 22 13" fill="none" stroke="#fffbf4" stroke-width="6" stroke-linecap="round"/>
+    <circle cx="48" cy="62" r="5" fill="#12211f"/>
+    <circle cx="72" cy="62" r="5" fill="#12211f"/>
+    <path d="M27 54 11 42m82 12 16-12M36 82 22 96m62-14 14 14M46 86l-5 17m33-17 5 17" stroke="#fffbf4" stroke-width="7" stroke-linecap="round"/>
+    <path d="M20 35c-4-13 8-22 18-14-10 2-13 9-18 14Zm80 0c4-13-8-22-18-14 10 2 13 9 18 14Z" fill="#e35e46"/>
+  </g>
+
+  <!-- footer -->
+  <line x1="72" y1="540" x2="1128" y2="540" stroke="#f4efe6" stroke-opacity="0.16"/>
+  <text x="72" y="584" font-family="Georgia, serif" font-weight="bold" font-size="30" letter-spacing="-0.6" fill="#f4efe6">Yossi Eliaz</text>
+  <text x="1128" y="582" text-anchor="end" font-family="Menlo, monospace" font-size="18" fill="#66b9b0">zozo123.github.io/rust-rover-plugin-crabbox</text>
+</svg>
