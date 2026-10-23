@@ -16,10 +16,10 @@ Crabbox or Islo sandbox, with streamed output and durable evidence coming back
 to the IDE.
 
 Built on [OpenClaw Crabbox](https://github.com/openclaw/crabbox) (MIT). This
-plugin is not part of Crabbox. It is written by Yossi Eliaz and packaged with
-Incredibuild as the vendor (plugin id `com.incredibuild.crabbox` in
-`plugin.xml`). Disclosure: the author is Principal Engineer, AI Systems at
-Incredibuild / islo.dev.
+plugin is not part of Crabbox. It is written by Yossi Eliaz, and its
+`plugin.xml` lists Incredibuild as the vendor (plugin id
+`com.incredibuild.crabbox`). Disclosure: the author is Principal Engineer, AI
+Systems at Incredibuild / islo.dev.
 
 ## Website
 
